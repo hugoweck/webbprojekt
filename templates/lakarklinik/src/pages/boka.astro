@@ -1,0 +1,376 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Boka tid" description="Boka tid hos Norrmalms Läkarklinik online. Välj tjänst, datum och tid — enkelt och säkert.">
+
+  <!-- ─── PAGE HERO (compact) ─── -->
+  <div class="page-hero boka-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-inner">
+      <span class="page-hero-eyebrow">Boka tid</span>
+      <h1>Välkommen<br>att boka</h1>
+      <p>Vi bekräftar din bokning via e-post. Har du brådskande besvär — ring oss direkt.</p>
+    </div>
+  </div>
+
+  <!-- ─── BOOKING LAYOUT ─── -->
+  <div class="boka-layout">
+
+    <!-- FORM -->
+    <div class="boka-form-wrap" id="bookingForm">
+      <form class="boka-form" onsubmit="handleSubmit(event)">
+
+        <fieldset>
+          <legend>Dina uppgifter</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="fname">Förnamn</label>
+              <input id="fname" type="text" required placeholder="Anna" />
+            </div>
+            <div class="field">
+              <label for="lname">Efternamn</label>
+              <input id="lname" type="text" required placeholder="Karlsson" />
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="pnr">Personnummer</label>
+              <input id="pnr" type="text" required placeholder="ÅÅMMDD-XXXX" />
+            </div>
+            <div class="field">
+              <label for="tel">Telefon</label>
+              <input id="tel" type="tel" required placeholder="070 – XXX XX XX" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="email">E-post</label>
+            <input id="email" type="email" required placeholder="anna@example.com" />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Typ av besök</legend>
+          <div class="radio-grid">
+            <label class="radio-card">
+              <input type="radio" name="service" value="allmanlakare" required />
+              <span class="rc-name">Allmänläkare</span>
+              <span class="rc-price">fr 250 kr</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="service" value="halsoundersok" />
+              <span class="rc-name">Hälsoundersökning</span>
+              <span class="rc-price">fr 1 500 kr</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="service" value="psykologi" />
+              <span class="rc-name">Psykologi & KBT</span>
+              <span class="rc-price">1 200 kr</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="service" value="dermatologi" />
+              <span class="rc-name">Dermatologi</span>
+              <span class="rc-price">800 kr</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="service" value="vaccination" />
+              <span class="rc-name">Vaccinationer</span>
+              <span class="rc-price">fr 250 kr</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="service" value="digital" />
+              <span class="rc-name">Digital konsultation</span>
+              <span class="rc-price">350 kr</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Önskad tid</legend>
+          <div class="field-row">
+            <div class="field">
+              <label for="datum">Datum</label>
+              <input id="datum" type="date" required />
+            </div>
+            <div class="field">
+              <label for="tid">Tid</label>
+              <select id="tid" required>
+                <option value="">Välj tid</option>
+                <option>08:00</option>
+                <option>08:30</option>
+                <option>09:00</option>
+                <option>09:30</option>
+                <option>10:00</option>
+                <option>10:30</option>
+                <option>11:00</option>
+                <option>13:00</option>
+                <option>13:30</option>
+                <option>14:00</option>
+                <option>14:30</option>
+                <option>15:00</option>
+                <option>15:30</option>
+                <option>16:00</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Beskriv ditt ärende <span class="opt">valfritt</span></legend>
+          <div class="field">
+            <textarea id="arende" rows="4" placeholder="Beskriv kortfattat vad du vill ha hjälp med. Denna information hjälper oss att förbereda rätt läkare."></textarea>
+          </div>
+          <div class="field" style="margin-top:0.75rem">
+            <label for="nypatient" style="flex-direction:row;align-items:center;gap:0.6rem;cursor:pointer">
+              <input id="nypatient" type="checkbox" style="width:auto;margin:0" />
+              <span style="font-size:0.85rem;color:var(--muted)">Jag är ny patient hos Norrmalms Läkarklinik</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Godkännanden</legend>
+          <div class="consent-stack">
+            <label class="consent-item">
+              <input type="checkbox" required />
+              <span>Jag godkänner att mina uppgifter behandlas enligt <a href="#">integritetspolicyn</a> och GDPR.</span>
+            </label>
+            <label class="consent-item">
+              <input type="checkbox" required />
+              <span>Jag bekräftar att uppgivna uppgifter är korrekta.</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="submit-btn">Skicka bokning →</button>
+      </form>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-state" id="successState" style="display:none">
+        <div class="success-icon">
+          <svg viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="23" stroke="var(--teal)" stroke-width="1.5"/>
+            <path d="M14 24l7 7 13-14" stroke="var(--teal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h2>Bokning mottagen</h2>
+        <p>Tack! Vi bekräftar din bokning via e-post inom kort. Vid frågor — ring oss på <a href="tel:0812345678">08 – 123 456 78</a>.</p>
+        <a href="/" class="btn-secondary">Tillbaka till startsidan</a>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <aside class="boka-sidebar">
+      <div class="sidebar-block">
+        <div class="sb-title">Kontakt & adress</div>
+        <ul class="sb-list">
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M10 2C7.24 2 5 4.24 5 7c0 4.19 5 11 5 11s5-6.81 5-11c0-2.76-2.24-5-5-5z"/><circle cx="10" cy="7" r="1.8"/></svg>
+            Kungsgatan 42, Stockholm
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5z"/><path d="M2 8h16"/></svg>
+            <a href="tel:0812345678">08 – 123 456 78</a>
+          </li>
+          <li>
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884zM18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/></svg>
+            <a href="mailto:info@norrmalmslakar.se">info@norrmalmslakar.se</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="sb-title">Öppettider</div>
+        <table class="hours-table">
+          <tr><td>Måndag – Fredag</td><td>08:00 – 18:00</td></tr>
+          <tr><td>Lördag</td><td>09:00 – 14:00</td></tr>
+          <tr><td>Söndag</td><td>Stängt</td></tr>
+          <tr class="highlight"><td>Digital konsult</td><td>Dygnet runt</td></tr>
+        </table>
+      </div>
+
+      <div class="sidebar-block">
+        <div class="sb-title">Tänk på att ta med</div>
+        <ul class="bring-list">
+          <li>Giltig legitimation</li>
+          <li>Försäkringskort (om aktuellt)</li>
+          <li>Lista på nuvarande mediciner</li>
+          <li>Tidigare journaler vid behov</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-note">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="var(--teal)" stroke-width="1.2"/><path d="M8 5v4M8 11v.5" stroke="var(--teal)" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <p>Akuta besvär? Ring oss direkt — vi prioriterar alltid akuta fall.</p>
+      </div>
+    </aside>
+  </div>
+
+</Layout>
+
+<style>
+  .boka-hero .page-hero-inner { max-width: 640px; padding-bottom: clamp(3rem,6vh,5rem); }
+
+  /* ─── LAYOUT ─── */
+  .boka-layout {
+    display: grid; grid-template-columns: 1fr 360px;
+    gap: 0; max-width: 1200px; margin: 0 auto;
+    padding: clamp(3rem,6vw,5rem) clamp(1.5rem,5vw,4rem);
+    align-items: start;
+  }
+
+  /* ─── FORM ─── */
+  .boka-form-wrap { padding-right: clamp(2rem,5vw,5rem); }
+  .boka-form { display: flex; flex-direction: column; gap: 2.5rem; }
+
+  fieldset {
+    border: none; padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  legend {
+    font-size: 0.65rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--teal); font-weight: 500;
+    margin-bottom: 1.25rem; display: block;
+    padding-bottom: 0.75rem; border-bottom: 1px solid var(--subtle);
+    width: 100%;
+  }
+  .opt { font-size: 0.6rem; color: var(--muted); text-transform: none; letter-spacing: 0; }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .field { display: flex; flex-direction: column; gap: 0.35rem; }
+  label { font-size: 0.78rem; font-weight: 500; color: var(--navy); }
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%; padding: 0.8rem 1rem;
+    border: 1px solid var(--subtle);
+    background: var(--white); color: var(--text);
+    font-family: var(--font-body); font-size: 0.85rem;
+    outline: none; appearance: none;
+    transition: border-color 0.2s;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--teal);
+  }
+  textarea { resize: vertical; }
+
+  /* ─── RADIO CARDS ─── */
+  .radio-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+  .radio-card {
+    display: flex; flex-direction: column; gap: 0.3rem;
+    padding: 1rem; border: 1px solid var(--subtle);
+    background: var(--white); cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .radio-card input[type="radio"] {
+    position: absolute; opacity: 0; width: 0; height: 0;
+  }
+  .radio-card:has(input:checked) {
+    border-color: var(--teal); background: var(--teal-ll);
+  }
+  .rc-name { font-size: 0.82rem; font-weight: 500; color: var(--navy); }
+  .rc-price { font-size: 0.72rem; color: var(--muted); }
+
+  /* ─── CONSENT ─── */
+  .consent-stack { display: flex; flex-direction: column; gap: 0.85rem; }
+  .consent-item {
+    display: flex; align-items: flex-start; gap: 0.7rem; cursor: pointer;
+  }
+  .consent-item input { margin-top: 0.15rem; flex-shrink: 0; accent-color: var(--teal); }
+  .consent-item span { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+  .consent-item a { color: var(--teal); text-decoration: underline; }
+
+  /* ─── SUBMIT ─── */
+  .submit-btn {
+    padding: 1rem 2.5rem; background: var(--navy); color: #fff;
+    border: none; cursor: pointer; font-family: var(--font-body);
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+    align-self: flex-start;
+    transition: background 0.25s;
+  }
+  .submit-btn:hover { background: var(--teal); }
+
+  /* ─── SUCCESS ─── */
+  .success-state {
+    padding: 4rem 2rem; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
+  }
+  .success-icon svg { width: 56px; height: 56px; }
+  .success-state h2 { font-size: 1.5rem; font-weight: 400; color: var(--navy); }
+  .success-state p { font-size: 0.9rem; color: var(--muted); max-width: 400px; line-height: 1.75; }
+  .success-state a { color: var(--teal); }
+
+  /* ─── SIDEBAR ─── */
+  .boka-sidebar {
+    position: sticky; top: calc(var(--nav-h) + 2rem);
+    display: flex; flex-direction: column; gap: 0;
+    border: 1px solid var(--subtle); background: var(--white);
+  }
+  .sidebar-block {
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--subtle);
+  }
+  .sb-title {
+    font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 1.1rem;
+  }
+  .sb-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .sb-list li {
+    display: flex; align-items: center; gap: 0.65rem;
+    font-size: 0.83rem; color: var(--muted);
+  }
+  .sb-list svg { width: 16px; height: 16px; flex-shrink: 0; stroke: var(--teal); }
+  .sb-list a { color: var(--navy); text-decoration: none; }
+  .sb-list a:hover { color: var(--teal); }
+
+  .hours-table { width: 100%; border-collapse: collapse; }
+  .hours-table td { font-size: 0.82rem; padding: 0.4rem 0; color: var(--muted); }
+  .hours-table td:last-child { text-align: right; color: var(--navy); font-weight: 500; }
+  .hours-table tr.highlight td { color: var(--teal); }
+
+  .bring-list { list-style: none; display: flex; flex-direction: column; gap: 0.55rem; }
+  .bring-list li {
+    font-size: 0.82rem; color: var(--muted); padding-left: 1rem;
+    position: relative;
+  }
+  .bring-list li::before {
+    content: '—'; position: absolute; left: 0;
+    color: rgba(20,119,110,0.4); font-size: 0.75rem;
+  }
+
+  .sidebar-note {
+    padding: 1.25rem 2rem;
+    display: flex; gap: 0.75rem; align-items: flex-start;
+    background: var(--teal-ll);
+  }
+  .sidebar-note svg { flex-shrink: 0; margin-top: 0.1rem; }
+  .sidebar-note p { font-size: 0.8rem; color: var(--teal); line-height: 1.65; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .boka-layout { grid-template-columns: 1fr; }
+    .boka-form-wrap { padding-right: 0; margin-bottom: 2.5rem; }
+    .boka-sidebar { position: static; }
+    .radio-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 560px) {
+    .field-row { grid-template-columns: 1fr; }
+    .radio-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+
+<script>
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+    const form = document.getElementById('bookingForm')!;
+    const success = document.getElementById('successState')!;
+    (form.querySelector('.boka-form') as HTMLElement).style.display = 'none';
+    success.style.display = 'flex';
+    window.scrollTo({ top: form.offsetTop - 100, behavior: 'smooth' });
+  }
+  (window as any).handleSubmit = handleSubmit;
+</script>

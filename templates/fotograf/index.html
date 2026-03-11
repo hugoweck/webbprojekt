@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Erik Strand — Fotograf Stockholm</title>
+  <meta name="description" content="Editorial och dokumentär fotografi i Stockholm. Porträtt, event och kommersiell fotografering.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070707;
+      --surface: #101010;
+      --surface2: #161616;
+      --text: #f0ece5;
+      --muted: #6e6e6e;
+      --subtle: #242424;
+      --gold: #c8a96e;
+      --gold-dim: rgba(200,169,110,0.1);
+      --nav-h: 72px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      transition: background 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(7,7,7,0.94);
+      backdrop-filter: blur(16px);
+      border-color: rgba(255,255,255,0.05);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem; font-weight: 400;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 1px;
+      background: var(--text);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(7,7,7,0.97); backdrop-filter: blur(20px);
+      padding: 2.5rem clamp(1.5rem,5vw,4rem);
+      z-index: 99; border-bottom: 1px solid var(--subtle);
+      transform: translateY(-110%);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mobile-menu.open { transform: translateY(0); }
+    .mobile-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.75rem; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300;
+      color: var(--text); text-decoration: none;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; height: 100dvh; min-height: 640px;
+      display: flex; align-items: flex-end;
+      padding: 0 clamp(1.5rem,5vw,4rem) clamp(3.5rem,9vh,7rem);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 65% at 65% 35%, #1c1508 0%, transparent 65%),
+        radial-gradient(ellipse 50% 70% at 15% 80%, #0e0e0e 0%, transparent 55%),
+        linear-gradient(160deg, #0d0d0d 0%, #070707 60%, #090907 100%);
+      will-change: transform;
+    }
+    .hero-vline {
+      position: absolute; top: 0; bottom: 0;
+      left: clamp(1.5rem,5vw,4rem); width: 1px;
+      background: linear-gradient(to bottom,
+        transparent 0%, rgba(200,169,110,0.25) 20%,
+        rgba(200,169,110,0.25) 80%, transparent 100%);
+    }
+    .hero-num {
+      position: absolute; top: 50%; right: clamp(1.5rem,4vw,3.5rem);
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-size: 0.62rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    }
+    .hero-num::after {
+      content: '';
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      animation: pulse 2.2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.5); }
+    }
+    .hero-content { position: relative; z-index: 1; }
+    .hero-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.68rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.75rem;
+    }
+    .hero-label::before {
+      content: ''; display: block;
+      width: 2.5rem; height: 1px; background: var(--gold);
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem,11vw,10rem);
+      font-weight: 300; line-height: 0.88;
+      letter-spacing: -0.015em;
+      margin-bottom: 2.25rem;
+    }
+    .hero-title em { display: block; font-style: italic; color: var(--gold); }
+    .hero-desc {
+      font-size: clamp(0.82rem,1.4vw,0.95rem);
+      color: var(--muted); max-width: 360px;
+      line-height: 1.85; margin-bottom: 2.75rem;
+    }
+    .hero-cta {
+      display: inline-flex; align-items: center; gap: 0.75rem;
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(200,169,110,0.35);
+      padding-bottom: 0.3rem;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .hero-cta:hover { color: var(--gold); border-color: var(--gold); }
+    .hero-cta svg { transition: transform 0.35s; }
+    .hero-cta:hover svg { transform: translateX(5px); }
+
+    /* ─── PORTFOLIO ─── */
+    #portfolio { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem); }
+    .section-head {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; flex-wrap: wrap;
+      gap: 1.5rem; margin-bottom: 3rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem,5vw,3.75rem);
+      font-weight: 300; line-height: 1; letter-spacing: -0.01em;
+    }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .filters { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+    .filter-btn {
+      font-size: 0.68rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      background: none; border: none; border-bottom: 1px solid transparent;
+      padding-bottom: 0.2rem; cursor: pointer;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      color: var(--text); border-color: var(--gold);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 280px;
+      gap: 3px;
+    }
+    .grid-item {
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .grid-item.tall { grid-row: span 2; }
+    .grid-item.wide { grid-column: span 2; }
+    .grid-img {
+      width: 100%; height: 100%;
+      transition: transform 0.75s cubic-bezier(0.25,0.46,0.45,0.94);
+      will-change: transform;
+    }
+    .grid-item:hover .grid-img { transform: scale(1.06); }
+    .grid-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.1) 50%, transparent 100%);
+      opacity: 0; transition: opacity 0.45s;
+      display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 1.5rem;
+    }
+    .grid-item:hover .grid-overlay { opacity: 1; }
+    .grid-overlay h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem; font-weight: 400;
+      transform: translateY(10px);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .grid-item:hover .grid-overlay h3 { transform: translateY(0); }
+    .grid-overlay span {
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--gold);
+      transform: translateY(10px);
+      transition: transform 0.45s 0.04s cubic-bezier(0.16,1,0.3,1);
+    }
+    .grid-item:hover .grid-overlay span { transform: translateY(0); }
+
+    /* Gradient "images" */
+    .g1 { background: radial-gradient(ellipse 55% 60% at 45% 40%, #1c1a15 0%, #0d0b08 60%, #070707 100%); }
+    .g2 { background: radial-gradient(ellipse 60% 50% at 30% 60%, #0c1420 0%, #060d16 65%, #040810 100%); }
+    .g3 { background: radial-gradient(ellipse 50% 55% at 60% 35%, #1a0d0a 0%, #100707 65%, #070707 100%); }
+    .g4 { background: radial-gradient(ellipse 65% 55% at 55% 55%, #0c1a0e 0%, #071009 65%, #050805 100%); }
+    .g5 { background: radial-gradient(ellipse 60% 50% at 40% 50%, #16121e 0%, #0e0c16 65%, #080810 100%); }
+    .g6 { background: radial-gradient(ellipse 70% 60% at 50% 40%, #1a1609 0%, #100e05 65%, #080706 100%); }
+
+    /* ─── ABOUT ─── */
+    #om { display: grid; grid-template-columns: 1fr 1fr; min-height: 620px; }
+    .about-img {
+      position: relative; overflow: hidden; min-height: 480px;
+      background: radial-gradient(ellipse 60% 65% at 55% 45%, #1a150e 0%, #100c07 65%, #080706 100%);
+    }
+    .about-img::after {
+      content: 'Erik Strand, 2024';
+      position: absolute; bottom: 2rem; left: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; font-style: italic;
+      color: rgba(240,236,229,0.35);
+    }
+    .about-img-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 40% 50% at 60% 40%, rgba(200,169,110,0.07) 0%, transparent 70%);
+    }
+    .about-body {
+      background: var(--surface);
+      padding: clamp(3rem,7vw,6rem);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.5rem;
+    }
+    .about-body h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem,4vw,3.2rem);
+      font-weight: 300; line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .about-body h2 em { font-style: italic; color: var(--gold); }
+    .about-p {
+      color: var(--muted); font-size: 0.9rem;
+      line-height: 1.85; margin-bottom: 1.1rem;
+    }
+    .stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; padding-top: 2rem;
+      border-top: 1px solid var(--subtle); margin-top: 1rem;
+    }
+    .stat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.6rem; font-weight: 300;
+      color: var(--gold); line-height: 1;
+    }
+    .stat-l {
+      font-size: 0.68rem; letter-spacing: 0.08em;
+      color: var(--muted); margin-top: 0.3rem;
+    }
+
+    /* ─── PACKAGES ─── */
+    #paket {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      border-top: 1px solid var(--subtle);
+    }
+    .pkg-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1px; background: var(--subtle);
+      margin-top: 3rem;
+    }
+    .pkg {
+      background: var(--bg); padding: clamp(2rem,4vw,3rem);
+      position: relative; display: flex; flex-direction: column;
+      transition: background 0.3s;
+    }
+    .pkg.featured { background: var(--surface); }
+    .pkg.featured::before {
+      content: 'Populärast';
+      position: absolute; top: 0; right: 2rem;
+      background: var(--gold); color: var(--bg);
+      font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; padding: 0.32rem 0.85rem;
+    }
+    .pkg-name {
+      font-size: 0.62rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.25rem;
+    }
+    .pkg-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 300; line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+    .pkg-price sup { font-size: 1.1rem; vertical-align: top; margin-top: 0.6rem; }
+    .pkg-unit { font-size: 0.72rem; color: var(--muted); margin-bottom: 1.75rem; }
+    .pkg-div { height: 1px; background: var(--subtle); margin-bottom: 1.75rem; }
+    .pkg-feats { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; flex: 1; }
+    .pkg-feats li {
+      font-size: 0.85rem; color: var(--muted);
+      padding-left: 1.3rem; position: relative;
+    }
+    .pkg-feats li::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+    .pkg-btn {
+      display: block; margin-top: 2rem;
+      padding: 0.9rem; text-align: center;
+      font-size: 0.68rem; letter-spacing: 0.18em;
+      text-transform: uppercase; text-decoration: none;
+      border: 1px solid var(--subtle); color: var(--muted);
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .pkg-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .pkg.featured .pkg-btn {
+      border-color: var(--gold); color: var(--gold);
+    }
+    .pkg.featured .pkg-btn:hover {
+      background: var(--gold); color: var(--bg);
+    }
+
+    /* ─── CONTACT ─── */
+    #kontakt {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      background: var(--surface);
+    }
+    .contact-wrap { max-width: 680px; margin: 0 auto; text-align: center; }
+    .contact-wrap h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem,6vw,4.5rem);
+      font-weight: 300; line-height: 0.95;
+      margin-bottom: 0.75rem;
+    }
+    .contact-wrap h2 em { font-style: italic; color: var(--gold); }
+    .contact-wrap > p { color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem; }
+    .form { display: flex; flex-direction: column; gap: 1.1rem; text-align: left; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .fg { display: flex; flex-direction: column; gap: 0.5rem; }
+    .fg label {
+      font-size: 0.62rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .fg input, .fg textarea, .fg select {
+      background: var(--bg); border: 1px solid var(--subtle);
+      color: var(--text); padding: 0.9rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.875rem;
+      transition: border-color 0.3s; outline: none; width: 100%;
+      -webkit-appearance: none; border-radius: 0;
+    }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--gold); }
+    .fg textarea { resize: vertical; min-height: 120px; }
+    .fg select option { background: var(--surface); }
+    .submit {
+      align-self: flex-start; display: inline-flex;
+      align-items: center; gap: 0.75rem;
+      padding: 1rem 2.25rem; background: var(--gold);
+      color: var(--bg); font-family: 'Inter', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: opacity 0.3s;
+    }
+    .submit:hover { opacity: 0.82; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      padding: 2.5rem clamp(1.5rem,5vw,4rem);
+      border-top: 1px solid var(--subtle);
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .f-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; color: var(--text);
+    }
+    .f-copy { font-size: 0.7rem; color: var(--muted); }
+    .f-links { display: flex; gap: 1.75rem; }
+    .f-links a {
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .f-links a:hover { color: var(--gold); }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.85s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .grid { grid-template-columns: repeat(2,1fr); grid-auto-rows: 240px; }
+      .grid-item.tall { grid-row: span 1; }
+      .grid-item.wide { grid-column: span 1; }
+      #om { grid-template-columns: 1fr; }
+      .about-img { min-height: 360px; }
+      .pkg-grid { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(3,1fr); }
+    }
+    @media (max-width: 620px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .mobile-menu { display: block; }
+      .grid { grid-template-columns: 1fr; grid-auto-rows: 240px; }
+      .row { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: 1fr; gap: 1.25rem; }
+      .hero-num { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="#" class="nav-logo">Erik Strand</a>
+    <ul class="nav-links">
+      <li><a href="#portfolio">Portfolio</a></li>
+      <li><a href="#om">Om mig</a></li>
+      <li><a href="#paket">Paket</a></li>
+      <li><a href="#kontakt">Kontakt</a></li>
+    </ul>
+    <button class="nav-toggle" id="toggle" aria-label="Öppna meny">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu" id="mob">
+    <ul>
+      <li><a href="#portfolio" class="ml">Portfolio</a></li>
+      <li><a href="#om" class="ml">Om mig</a></li>
+      <li><a href="#paket" class="ml">Paket</a></li>
+      <li><a href="#kontakt" class="ml">Kontakt</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-vline"></div>
+    <div class="hero-num">Fotograf</div>
+    <div class="hero-content">
+      <div class="hero-label">Stockholm &nbsp;—&nbsp; Sedan 2011</div>
+      <h1 class="hero-title">
+        Erik<br>
+        <em>Strand</em>
+      </h1>
+      <p class="hero-desc">Editorial och dokumentär fotografi. Jag fångar de ärliga ögonblicken — ljuset som faller rätt, känslan som inte går att iscensätta.</p>
+      <a href="#portfolio" class="hero-cta">
+        Se portfolio
+        <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+          <path d="M1 5h14M10 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="section-head">
+      <h2 class="section-title reveal">Utvalda<br><em>arbeten</em></h2>
+      <div class="filters">
+        <button class="filter-btn active">Alla</button>
+        <button class="filter-btn">Porträtt</button>
+        <button class="filter-btn">Editorial</button>
+        <button class="filter-btn">Event</button>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="grid-item tall reveal">
+        <div class="grid-img g1"></div>
+        <div class="grid-overlay"><h3>Ljusets arkitektur</h3><span>Editorial</span></div>
+      </div>
+      <div class="grid-item reveal d1">
+        <div class="grid-img g2"></div>
+        <div class="grid-overlay"><h3>Midvinter</h3><span>Porträtt</span></div>
+      </div>
+      <div class="grid-item reveal d2">
+        <div class="grid-img g3"></div>
+        <div class="grid-overlay"><h3>Rörelseblur</h3><span>Event</span></div>
+      </div>
+      <div class="grid-item reveal d1">
+        <div class="grid-img g4"></div>
+        <div class="grid-overlay"><h3>Skogsljus</h3><span>Editorial</span></div>
+      </div>
+      <div class="grid-item wide reveal d2">
+        <div class="grid-img g5"></div>
+        <div class="grid-overlay"><h3>Stadsnatt</h3><span>Porträtt</span></div>
+      </div>
+      <div class="grid-item reveal d3">
+        <div class="grid-img g6"></div>
+        <div class="grid-overlay"><h3>Guldtimmen</h3><span>Editorial</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="om">
+    <div class="about-img"><div class="about-img-glow"></div></div>
+    <div class="about-body">
+      <div class="eyebrow reveal">Om fotografen</div>
+      <h2 class="reveal d1">Kameran som<br><em>berättarverktyg</em></h2>
+      <p class="about-p reveal d2">Jag är en Stockholmsbaserad fotograf med bakgrund i dokumentärfilm. Sedan 2011 har jag arbetat med allt från intimare porträttsessioner till storskaliga eventproduktioner för Spotify, H&M och Visit Sweden.</p>
+      <p class="about-p reveal d2">Min filosofi är enkel: det bästa fotot är det som känns sant. Jag jobbar med naturligt ljus när det går, och med en minimalistisk approach som låter motivet tala.</p>
+      <div class="stats reveal d3">
+        <div><div class="stat-n">13</div><div class="stat-l">Års erfarenhet</div></div>
+        <div><div class="stat-n">400+</div><div class="stat-l">Uppdrag</div></div>
+        <div><div class="stat-n">60+</div><div class="stat-l">Kunder</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section id="paket">
+    <div class="section-head">
+      <h2 class="section-title reveal">Paket &<br><em>priser</em></h2>
+    </div>
+    <div class="pkg-grid">
+      <div class="pkg reveal">
+        <div class="pkg-name">Intro</div>
+        <div class="pkg-price"><sup>kr</sup>3 900</div>
+        <div class="pkg-unit">per session</div>
+        <div class="pkg-div"></div>
+        <ul class="pkg-feats">
+          <li>2 timmars session</li>
+          <li>15 retuscherade bilder</li>
+          <li>Digital leverans inom 7 dagar</li>
+          <li>En location</li>
+        </ul>
+        <a href="#kontakt" class="pkg-btn">Boka session</a>
+      </div>
+      <div class="pkg featured reveal d1">
+        <div class="pkg-name">Standard</div>
+        <div class="pkg-price"><sup>kr</sup>7 500</div>
+        <div class="pkg-unit">per session</div>
+        <div class="pkg-div"></div>
+        <ul class="pkg-feats">
+          <li>4 timmars session</li>
+          <li>40 retuscherade bilder</li>
+          <li>Leverans inom 5 dagar</li>
+          <li>Upp till tre locations</li>
+          <li>Styling-konsultation ingår</li>
+        </ul>
+        <a href="#kontakt" class="pkg-btn">Boka session</a>
+      </div>
+      <div class="pkg reveal d2">
+        <div class="pkg-name">Premium</div>
+        <div class="pkg-price"><sup>kr</sup>14 000</div>
+        <div class="pkg-unit">per projekt</div>
+        <div class="pkg-div"></div>
+        <ul class="pkg-feats">
+          <li>Heldagsproduktion</li>
+          <li>Obegränsat antal bilder</li>
+          <li>Leverans inom 48 timmar</li>
+          <li>Assistentfotograf ingår</li>
+          <li>Licensiering ingår</li>
+        </ul>
+        <a href="#kontakt" class="pkg-btn">Boka session</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="kontakt">
+    <div class="contact-wrap">
+      <div class="eyebrow reveal">Låt oss skapa något</div>
+      <h2 class="reveal d1">Ta<br><em>kontakt</em></h2>
+      <p class="reveal d2">Berätta om ditt projekt, så hör jag av mig inom 24 timmar.</p>
+      <form class="form reveal d3" onsubmit="return false">
+        <div class="row">
+          <div class="fg">
+            <label>Namn</label>
+            <input type="text" placeholder="Anna Lindström">
+          </div>
+          <div class="fg">
+            <label>E-post</label>
+            <input type="email" placeholder="anna@foretag.se">
+          </div>
+        </div>
+        <div class="fg">
+          <label>Typ av uppdrag</label>
+          <select>
+            <option value="">Välj kategori</option>
+            <option>Porträtt</option>
+            <option>Editorial</option>
+            <option>Event</option>
+            <option>Kommersiellt</option>
+            <option>Övrigt</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Berätta mer</label>
+          <textarea placeholder="Beskriv ditt projekt, budget och önskad tidsram..."></textarea>
+        </div>
+        <button class="submit" type="submit">
+          Skicka förfrågan
+          <svg width="15" height="9" viewBox="0 0 15 9" fill="none">
+            <path d="M1 4.5h13M9.5 1l3.5 3.5L9.5 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-logo">Erik Strand</div>
+    <div class="f-copy">© 2024 Erik Strand Fotografi</div>
+    <div class="f-links">
+      <a href="#">Instagram</a>
+      <a href="#">LinkedIn</a>
+      <a href="#">Behance</a>
+    </div>
+  </footer>
+
+  <script>
+    // Nav on scroll
+    const nav = document.getElementById('nav');
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+      if (window.scrollY < window.innerHeight && heroBg) {
+        heroBg.style.transform = `translateY(${window.scrollY * 0.28}px)`;
+      }
+    }, { passive: true });
+
+    // Mobile menu
+    const toggle = document.getElementById('toggle');
+    const mob = document.getElementById('mob');
+    toggle.addEventListener('click', () => {
+      const open = toggle.classList.toggle('open');
+      mob.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      mob.classList.remove('open');
+      document.body.style.overflow = '';
+    }));
+
+    // Filter tabs
+    document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }));
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

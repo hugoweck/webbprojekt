@@ -1,0 +1,571 @@
+/* ============================================================
+   ROOT & RESET
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg:           #07070e;
+  --card-bg:      rgba(255,255,255,0.035);
+  --card-border:  rgba(255,255,255,0.07);
+  --card-hover:   rgba(255,255,255,0.055);
+  --btc-orange:   #f7931a;
+  --twitter-blue: #1d9bf0;
+  --green:        #00d17c;
+  --red:          #ff4a68;
+  --text-1:       rgba(255,255,255,0.92);
+  --text-2:       rgba(255,255,255,0.52);
+  --text-3:       rgba(255,255,255,0.28);
+  --font:         'Inter', system-ui, sans-serif;
+  --mono:         'JetBrains Mono', monospace;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-1);
+  font-family: var(--font);
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   AMBIENT BACKGROUND GLOWS
+   ============================================================ */
+.ambient {
+  position: fixed;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.a1 {
+  width: 900px; height: 900px;
+  top: -300px; left: -200px;
+  background: radial-gradient(ellipse, rgba(247,147,26,0.055) 0%, transparent 65%);
+}
+
+.a2 {
+  width: 700px; height: 600px;
+  top: 20%; right: -150px;
+  background: radial-gradient(ellipse, rgba(29,155,240,0.06) 0%, transparent 65%);
+}
+
+.a3 {
+  width: 600px; height: 500px;
+  bottom: -100px; left: 30%;
+  background: radial-gradient(ellipse, rgba(100,60,220,0.05) 0%, transparent 65%);
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(7,7,14,0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--text-1);
+}
+
+.nav-logo .dot {
+  color: var(--btc-orange);
+}
+
+.live-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: rgba(0, 209, 124, 0.1);
+  border: 1px solid rgba(0, 209, 124, 0.25);
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--green);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(0.7); }
+}
+
+.nav-clock {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: var(--text-2);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   MAIN GRID
+   ============================================================ */
+.grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 1.25rem;
+  padding: 5.5rem 2rem 2rem;
+  min-height: 100vh;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ============================================================
+   PANELS
+   ============================================================ */
+.panel {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ============================================================
+   PANEL HEADER
+   ============================================================ */
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.panel-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.btc-icon {
+  background: rgba(247,147,26,0.15);
+  color: var(--btc-orange);
+  border: 1px solid rgba(247,147,26,0.25);
+}
+
+.twitter-icon {
+  background: rgba(29,155,240,0.12);
+  color: var(--twitter-blue);
+  border: 1px solid rgba(29,155,240,0.22);
+}
+
+.panel-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-1);
+}
+
+.panel-sub {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  margin-top: 1px;
+  font-weight: 400;
+}
+
+.spacer { flex: 1; }
+
+.refresh-info {
+  font-size: 0.68rem;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+.demo-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: rgba(255, 200, 50, 0.8);
+  background: rgba(255, 200, 50, 0.1);
+  border: 1px solid rgba(255, 200, 50, 0.2);
+  padding: 3px 8px;
+  border-radius: 100px;
+}
+
+/* ============================================================
+   PRICE HERO
+   ============================================================ */
+.price-hero {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.price-main {
+  font-family: var(--mono);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 600;
+  color: var(--text-1);
+  letter-spacing: -0.02em;
+}
+
+.price-skeleton {
+  color: var(--text-3);
+  font-size: 1rem;
+  font-weight: 400;
+  font-family: var(--font);
+}
+
+.price-change {
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.price-change.up {
+  color: var(--green);
+  background: rgba(0, 209, 124, 0.1);
+  border: 1px solid rgba(0, 209, 124, 0.2);
+}
+
+.price-change.down {
+  color: var(--red);
+  background: rgba(255, 74, 104, 0.1);
+  border: 1px solid rgba(255, 74, 104, 0.2);
+}
+
+/* ============================================================
+   STATS ROW
+   ============================================================ */
+.stats-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.85rem 1rem;
+}
+
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+  text-transform: uppercase;
+}
+
+.stat-value {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-1);
+}
+
+.stat-divider {
+  width: 1px;
+  height: 36px;
+  background: var(--card-border);
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   TIMEFRAME TOGGLE
+   ============================================================ */
+.timeframe-row {
+  display: flex;
+  gap: 4px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  padding: 4px;
+  align-self: flex-start;
+}
+
+.tf-btn {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  padding: 5px 14px;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tf-btn:hover {
+  color: var(--text-2);
+  background: rgba(255,255,255,0.05);
+}
+
+.tf-btn.active {
+  background: rgba(247,147,26,0.18);
+  color: var(--btc-orange);
+  border: 1px solid rgba(247,147,26,0.25);
+}
+
+/* ============================================================
+   CHART
+   ============================================================ */
+.chart-wrap {
+  position: relative;
+  flex: 1;
+  min-height: 260px;
+}
+
+#btcChart {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.chart-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(7,7,14,0.6);
+  border-radius: 8px;
+  transition: opacity 0.3s;
+}
+
+.chart-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(247,147,26,0.2);
+  border-top-color: var(--btc-orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   API NOTICE
+   ============================================================ */
+.api-notice {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255,200,50,0.06);
+  border: 1px solid rgba(255,200,50,0.15);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  font-size: 0.72rem;
+  color: rgba(255,200,50,0.75);
+  line-height: 1.4;
+}
+
+/* ============================================================
+   TWEETS FEED
+   ============================================================ */
+.tweets-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 280px);
+  padding-right: 4px;
+}
+
+.tweets-feed::-webkit-scrollbar {
+  width: 3px;
+}
+.tweets-feed::-webkit-scrollbar-track {
+  background: transparent;
+}
+.tweets-feed::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.1);
+  border-radius: 3px;
+}
+
+/* ── Single tweet card ── */
+.tweet-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 1rem 1.1rem;
+  transition: background 0.2s, border-color 0.2s;
+  animation: slideIn 0.4s ease both;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tweet-card:hover {
+  background: var(--card-hover);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.tweet-header {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.65rem;
+}
+
+.tweet-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #b22b2b, #e05c10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+  border: 2px solid rgba(255,255,255,0.12);
+}
+
+.tweet-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.tweet-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-1);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.verified-badge {
+  color: var(--twitter-blue);
+  flex-shrink: 0;
+}
+
+.tweet-handle {
+  font-size: 0.7rem;
+  color: var(--text-3);
+  margin-top: 1px;
+}
+
+.tweet-time {
+  font-size: 0.65rem;
+  color: var(--text-3);
+  font-family: var(--mono);
+  white-space: nowrap;
+}
+
+.tweet-text {
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.8);
+  word-break: break-word;
+}
+
+.tweet-footer {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.85rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.tweet-stat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  color: var(--text-3);
+  font-family: var(--mono);
+}
+
+.tweet-stat svg {
+  opacity: 0.6;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .tweets-feed {
+    max-height: 600px;
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    padding: 4.5rem 1rem 1rem;
+    gap: 1rem;
+  }
+
+  .panel {
+    padding: 1.25rem;
+  }
+
+  .price-main {
+    font-size: 1.8rem;
+  }
+
+  .stats-row {
+    flex-wrap: wrap;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat {
+    flex: 1 1 45%;
+  }
+}

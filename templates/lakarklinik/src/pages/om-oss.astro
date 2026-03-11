@@ -1,0 +1,280 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const team = [
+  {
+    initials: 'AL',
+    name: 'Dr. Anna Lindgren',
+    title: 'Allmänläkare & grundare',
+    spec: 'Internmedicin · Förebyggande vård',
+    bio: 'Anna grundade Norrmalms Läkarklinik 2009 efter 12 år inom Stockholms läns landsting. Hon är övertygad om att privatvård ska vara tillgänglig och personlig — inte ett privilegium.',
+  },
+  {
+    initials: 'MO',
+    name: 'Dr. Marcus Öberg',
+    title: 'Specialistläkare',
+    spec: 'Dermatologi · Sportmedicin',
+    bio: 'Marcus har specialistutbildning i dermatologi och lång erfarenhet av sportmedicin. Han tränar aktivt och förstår kroppens behov ur idrottarens perspektiv.',
+  },
+  {
+    initials: 'SB',
+    name: 'Dr. Sara Bergström',
+    title: 'Leg. psykolog',
+    spec: 'KBT · Stresshantering · Ångest',
+    bio: 'Sara är legitimerad psykolog med specialisering i kognitiv beteendeterapi. Hon har arbetat med allt från prestationsångest till utbrändhet och livskriser.',
+  },
+  {
+    initials: 'EH',
+    name: 'Dr. Erik Holm',
+    title: 'Allmänläkare',
+    spec: 'Hälsoundersökningar · Internmedicin',
+    bio: 'Erik kom till kliniken 2015 och ansvarar framförallt för hälsoundersökningar och företagshälsovård. Han är känd för sitt lugna, grundliga sätt i patientmötet.',
+  },
+];
+---
+
+<Layout title="Om oss" description="Lär känna teamet bakom Norrmalms Läkarklinik — erfarna läkare och psykologer med en gemensam vision om tillgänglig, högkvalitativ privatsjukvård.">
+
+  <!-- ─── PAGE HERO ─── -->
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-inner">
+      <span class="page-hero-eyebrow">Om kliniken</span>
+      <h1>En klinik byggd<br>på <em>förtroende</em></h1>
+      <p>Sedan 2009 har vi hjälpt stockholmare att få rätt vård, snabbt och utan krångel.</p>
+    </div>
+  </div>
+
+  <!-- ─── STORY ─── -->
+  <section class="story-section">
+    <div class="story-inner">
+      <div class="story-text reveal">
+        <span class="label">Vår historia</span>
+        <h2 class="story-h2">Varför vi startade</h2>
+        <p>År 2009 öppnade Dr. Anna Lindgren dörrarna till Norrmalms Läkarklinik med en enkel övertygelse: att privatvård inte ska vara en lyx, utan ett tillgängligt alternativ för den som vill ha mer tid, mer omsorg och kortare väntetider.</p>
+        <p>Idag har vi vuxit till ett team av fyra specialister, moderna lokaler på Kungsgatan 42 och ett nära samarbete med Karolinska Universitetssjukhuset för de fall som kräver vidare utredning. Men kärnan är densamma — varje patient förtjänar att bli sedd.</p>
+      </div>
+      <div class="story-stats reveal d2">
+        <div class="ss-item">
+          <div class="ss-num">2009</div>
+          <div class="ss-lbl">Grundades</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">1 500+</div>
+          <div class="ss-lbl">Patienter</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">4</div>
+          <div class="ss-lbl">Specialister</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num">15+</div>
+          <div class="ss-lbl">År i branschen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TEAM ─── -->
+  <section class="team-section">
+    <div class="container">
+      <div class="team-header reveal">
+        <span class="label">Teamet</span>
+        <h2 class="team-h2">Personerna bakom kliniken</h2>
+      </div>
+      <div class="team-grid">
+        {team.map((m, i) => (
+          <div class={`team-card reveal ${i > 0 ? `d${i}` : ''}`}>
+            <div class="tc-photo">
+              <div class="tc-initials">{m.initials}</div>
+            </div>
+            <div class="tc-body">
+              <div class="tc-name">{m.name}</div>
+              <div class="tc-title">{m.title}</div>
+              <div class="tc-spec">{m.spec}</div>
+              <p class="tc-bio">{m.bio}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── VALUES ─── -->
+  <section class="values-section">
+    <div class="values-inner">
+      <div class="values-left reveal">
+        <span class="label" style="color:rgba(255,255,255,0.4)">Våra värderingar</span>
+        <h2 class="values-h2">Det vi tror på</h2>
+        <p class="values-intro">Tre principer genomsyrar allt vi gör — från hur vi bokar tider till hur läkaren möter dig i rummet.</p>
+      </div>
+      <div class="values-right">
+        <div class="val-item reveal d1">
+          <div class="val-num">01</div>
+          <div class="val-body">
+            <div class="val-title">Tillgänglighet framför allt</div>
+            <p class="val-desc">Tid ska finnas när du behöver den — inte om tre veckor. Vi strävar alltid efter att erbjuda tid samma dag för akuta besvär.</p>
+          </div>
+        </div>
+        <div class="val-item reveal d2">
+          <div class="val-num">02</div>
+          <div class="val-body">
+            <div class="val-title">Evidensbaserad vård</div>
+            <p class="val-desc">Vi följer vetenskap och beprövad erfarenhet. Inga genvägar, inga modeord — bara klinisk kompetens och ärlighet.</p>
+          </div>
+        </div>
+        <div class="val-item reveal d3">
+          <div class="val-num">03</div>
+          <div class="val-body">
+            <div class="val-title">Du är en människa, inte ett nummer</div>
+            <p class="val-desc">Vi tar oss tid att lyssna. Varje besök är en relation — inte en transaktion. Dina besvär tas på allvar, alltid.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ACCREDITATIONS ─── -->
+  <section class="accred-section">
+    <div class="container">
+      <div class="accred-row reveal">
+        <div class="accred-item">
+          <div class="ac-title">IVO-auktoriserad</div>
+          <p class="ac-desc">Inspektionen för vård och omsorg har granskat och godkänt vår verksamhet.</p>
+        </div>
+        <div class="accred-item">
+          <div class="ac-title">GDPR-certifierad</div>
+          <p class="ac-desc">Din patientdata hanteras säkert och i enlighet med dataskyddsförordningen.</p>
+        </div>
+        <div class="accred-item">
+          <div class="ac-title">Karolinska-partner</div>
+          <p class="ac-desc">Samarbetsavtal för remisser och specialistvård vid Karolinska Universitetssjukhuset.</p>
+        </div>
+        <div class="accred-item">
+          <div class="ac-title">Försäkringssamarbete</div>
+          <p class="ac-desc">Samarbete med Skandia, Folksam och övriga stora sjukvårdsförsäkringsbolag.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="om-cta">
+    <div class="container">
+      <div class="om-cta-inner reveal">
+        <h2>Välkommen att boka<br>ditt första besök</h2>
+        <p>Vi tar emot nya patienter och ser fram emot att lära känna dig.</p>
+        <div class="om-cta-btns">
+          <a href="/boka" class="btn-primary">Boka tid →</a>
+          <a href="/tjanster" class="btn-secondary">Se tjänster</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</Layout>
+
+<style>
+  .story-section { background: var(--white); }
+  .story-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,4rem);
+    display: grid; grid-template-columns: 1fr 320px; gap: 5rem; align-items: start;
+  }
+  .story-h2 {
+    font-size: clamp(1.75rem,3.5vw,2.5rem);
+    font-weight: 400; color: var(--navy); margin: 0.6rem 0 1.5rem;
+  }
+  .story-text p { font-size: 0.92rem; color: var(--muted); line-height: 1.9; margin-bottom: 1rem; }
+  .story-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    border: 1px solid var(--subtle); align-self: center;
+  }
+  .ss-item {
+    padding: 1.75rem 2rem;
+    border-bottom: 1px solid var(--subtle); border-right: 1px solid var(--subtle);
+  }
+  .ss-item:nth-child(2n) { border-right: none; }
+  .ss-item:nth-last-child(-n+2) { border-bottom: none; }
+  .ss-num {
+    font-family: var(--font-display);
+    font-size: 1.9rem; font-weight: 400; color: var(--navy); line-height: 1;
+  }
+  .ss-lbl { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); margin-top: 0.4rem; }
+
+  .team-section { padding: clamp(5rem,10vw,8rem) 0; }
+  .team-header { margin-bottom: 3rem; }
+  .team-h2 { font-size: clamp(1.6rem,3vw,2.25rem); font-weight: 400; color: var(--navy); margin-top: 0.5rem; }
+  .team-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1px; background: var(--subtle2); }
+  .team-card {
+    background: var(--white); display: flex; gap: 1.5rem;
+    padding: 2.5rem; transition: background 0.25s;
+  }
+  .team-card:hover { background: var(--bg); }
+  .tc-photo {
+    width: 68px; height: 68px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--navy-m) 0%, var(--navy) 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .tc-initials { font-size: 0.88rem; font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: 0.05em; }
+  .tc-name { font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.15rem; }
+  .tc-title { font-size: 0.75rem; color: var(--teal); margin-bottom: 0.2rem; }
+  .tc-spec { font-size: 0.65rem; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.85rem; }
+  .tc-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.75; }
+
+  .values-section { background: var(--navy); }
+  .values-inner {
+    max-width: 1200px; margin: 0 auto;
+    padding: clamp(5rem,10vw,8rem) clamp(1.5rem,5vw,4rem);
+    display: grid; grid-template-columns: 320px 1fr; gap: 5rem; align-items: start;
+  }
+  .values-h2 {
+    font-size: clamp(1.75rem,3.5vw,2.5rem);
+    font-weight: 400; color: #fff; margin: 0.75rem 0 1rem;
+  }
+  .values-intro { font-size: 0.88rem; color: rgba(255,255,255,0.38); line-height: 1.8; }
+  .val-item {
+    display: flex; gap: 2rem; align-items: flex-start;
+    padding: 2.25rem 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .val-item:first-child { padding-top: 0; }
+  .val-num { font-size: 0.62rem; letter-spacing: 0.2em; color: rgba(20,119,110,0.6); flex-shrink: 0; padding-top: 0.15rem; }
+  .val-title { font-size: 0.95rem; font-weight: 500; color: #fff; margin-bottom: 0.5rem; }
+  .val-desc { font-size: 0.85rem; color: rgba(255,255,255,0.38); line-height: 1.8; }
+
+  .accred-section { padding: clamp(4rem,8vw,6rem) 0; background: var(--bg); }
+  .accred-row {
+    display: grid; grid-template-columns: repeat(4,1fr);
+    gap: 0; border: 1px solid var(--subtle);
+  }
+  .accred-item {
+    padding: 2rem 2.25rem; border-right: 1px solid var(--subtle);
+    transition: background 0.25s;
+  }
+  .accred-item:last-child { border-right: none; }
+  .accred-item:hover { background: var(--white); }
+  .ac-title { font-size: 0.85rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .ac-desc { font-size: 0.78rem; color: var(--muted); line-height: 1.7; }
+
+  .om-cta { padding: clamp(5rem,10vw,8rem) 0; background: var(--white); }
+  .om-cta h2 {
+    font-size: clamp(1.75rem,3.5vw,2.5rem);
+    font-weight: 400; color: var(--navy); margin-bottom: 0.85rem;
+  }
+  .om-cta p { font-size: 0.92rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.75; }
+  .om-cta-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .story-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .team-grid { grid-template-columns: 1fr; }
+    .values-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .accred-row { grid-template-columns: repeat(2,1fr); }
+    .accred-item:nth-child(2n) { border-right: none; }
+    .accred-item { border-bottom: 1px solid var(--subtle); }
+  }
+  @media (max-width: 580px) {
+    .team-card { flex-direction: column; }
+    .accred-row { grid-template-columns: 1fr; }
+    .accred-item { border-right: none; }
+  }
+</style>

@@ -1,0 +1,1 @@
+import"./hoisted.Dkoj4MWd.js";function n(o){o.preventDefault();const e=document.getElementById("bookingForm"),t=document.getElementById("successState");e.querySelector(".boka-form").style.display="none",t.style.display="flex",window.scrollTo({top:e.offsetTop-100,behavior:"smooth"})}window.handleSubmit=n;

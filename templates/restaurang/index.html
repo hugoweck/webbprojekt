@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fornäs — Restaurang &amp; Bar, Södermalm</title>
+  <meta name="description" content="Nordisk kök med öppet kök och noggrant utvalda råvaror. Boka bord på Fornäs i Södermalm, Stockholm.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0906;
+      --surface: #160f0a;
+      --surface2: #1e1510;
+      --text: #f0e4d0;
+      --muted: #9a7c62;
+      --subtle: #2a1e14;
+      --terra: #c4603a;
+      --terra-d: #a04e2e;
+      --cream: #f2e2c8;
+      --nav-h: 80px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem,5vw,4rem);
+      transition: background 0.5s, border-color 0.5s;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(14,9,6,0.95);
+      backdrop-filter: blur(16px);
+      border-color: rgba(255,255,255,0.04);
+    }
+    .nav-left { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-right { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-left a, .nav-right a {
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .nav-left a:hover, .nav-right a:hover { color: var(--text); }
+    .nav-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      text-align: center;
+    }
+    .nav-logo-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400;
+      letter-spacing: 0.12em; color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo-sub {
+      display: block; font-size: 0.55rem;
+      letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--muted); margin-top: -2px;
+    }
+    .nav-res {
+      padding: 0.65rem 1.35rem;
+      border: 1px solid rgba(196,96,58,0.5);
+      color: var(--terra) !important;
+      transition: background 0.3s, border-color 0.3s !important;
+    }
+    .nav-res:hover { background: var(--terra); color: var(--bg) !important; border-color: var(--terra); }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 1px;
+      background: var(--text);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .mob-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(14,9,6,0.98); backdrop-filter: blur(20px);
+      padding: 2.5rem clamp(1.5rem,5vw,4rem);
+      z-index: 99; border-bottom: 1px solid var(--subtle);
+      transform: translateY(-110%);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mob-menu.open { transform: translateY(0); }
+    .mob-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+    .mob-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 300;
+      color: var(--text); text-decoration: none;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; height: 100dvh; min-height: 640px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 65% 50% at 50% 40%, #2a1610 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 30% 70%, #1a0d07 0%, transparent 55%),
+        linear-gradient(170deg, #120a06 0%, #0e0906 60%, #100a07 100%);
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 40% 55% at 50% 45%, rgba(196,96,58,0.07) 0%, transparent 65%);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column;
+      align-items: center; gap: 0;
+    }
+    .hero-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.38em;
+      text-transform: uppercase; color: var(--terra);
+      margin-bottom: 1.75rem; display: flex; align-items: center; gap: 1.25rem;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block;
+      width: 2rem; height: 1px; background: var(--terra); opacity: 0.5;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4.5rem,14vw,12rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: 0.04em; color: var(--text);
+      margin-bottom: 2rem;
+    }
+    .hero-divider {
+      width: 1px; height: 3rem;
+      background: linear-gradient(to bottom, var(--terra), transparent);
+      margin: 0 auto 1.75rem;
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem,2.5vw,1.3rem);
+      font-style: italic; font-weight: 300;
+      color: var(--muted); max-width: 420px;
+      line-height: 1.7; margin-bottom: 2.75rem;
+    }
+    .hero-ctas { display: flex; gap: 1.25rem; flex-wrap: wrap; justify-content: center; }
+    .btn-terra {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+      padding: 1rem 2.25rem; background: var(--terra);
+      color: var(--bg); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none; transition: background 0.3s;
+    }
+    .btn-terra:hover { background: var(--terra-d); }
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+      padding: 1rem 2.25rem;
+      border: 1px solid rgba(196,96,58,0.35);
+      color: var(--terra); font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .btn-ghost:hover { background: rgba(196,96,58,0.08); border-color: var(--terra); }
+    .hero-scroll-hint {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+      z-index: 1;
+    }
+    .hero-scroll-hint span {
+      font-size: 0.58rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .scroll-dot {
+      width: 1px; height: 45px;
+      background: linear-gradient(to bottom, var(--terra) 0%, transparent 100%);
+      animation: scrollAnim 2.5s ease-in-out infinite;
+    }
+    @keyframes scrollAnim {
+      0%,100% { opacity: 1; transform: scaleY(1); transform-origin: top; }
+      50% { opacity: 0.35; transform: scaleY(0.4); transform-origin: top; }
+    }
+
+    /* ─── STORY ─── */
+    #story {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 560px;
+    }
+    .story-img {
+      position: relative; overflow: hidden; min-height: 460px;
+      background: radial-gradient(ellipse 65% 60% at 55% 45%, #2a1a10 0%, #1a0e07 60%, #0e0906 100%);
+    }
+    .story-img-glow {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 45% 55% at 50% 50%, rgba(196,96,58,0.09) 0%, transparent 65%);
+    }
+    .story-img-caption {
+      position: absolute; bottom: 2rem; left: 2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; font-style: italic;
+      color: rgba(240,228,208,0.3); border-left: 2px solid rgba(196,96,58,0.4);
+      padding-left: 0.85rem;
+    }
+    .story-body {
+      background: var(--surface);
+      padding: clamp(3rem,7vw,6.5rem);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--terra);
+      margin-bottom: 1.5rem;
+    }
+    .story-body h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem,4vw,3.25rem);
+      font-weight: 300; line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .story-body h2 em { font-style: italic; color: var(--terra); }
+    .story-p { color: var(--muted); font-size: 0.9rem; line-height: 1.85; margin-bottom: 1rem; }
+    .story-meta {
+      display: flex; gap: 2.5rem; margin-top: 1.5rem;
+      padding-top: 1.75rem; border-top: 1px solid var(--subtle);
+      flex-wrap: wrap;
+    }
+    .sm-item .sm-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; color: var(--terra); line-height: 1;
+    }
+    .sm-item .sm-key { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; }
+
+    /* ─── MENU ─── */
+    #meny {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      border-top: 1px solid var(--subtle);
+    }
+    .menu-head { text-align: center; margin-bottom: 3.5rem; }
+    .menu-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem,5vw,4rem);
+      font-weight: 300; letter-spacing: 0.02em;
+    }
+    .menu-head h2 em { font-style: italic; color: var(--terra); }
+    .menu-head p {
+      color: var(--muted); font-size: 0.85rem;
+      margin-top: 0.75rem; font-style: italic;
+    }
+    .menu-tabs {
+      display: flex; justify-content: center; gap: 0;
+      margin-bottom: 3rem; border-bottom: 1px solid var(--subtle);
+      flex-wrap: wrap;
+    }
+    .mtab {
+      padding: 0.85rem 2rem; font-size: 0.7rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); background: none;
+      border: none; cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: color 0.3s, border-color 0.3s;
+    }
+    .mtab.active { color: var(--text); border-color: var(--terra); }
+    .mtab:hover:not(.active) { color: var(--terra); }
+    .menu-section { display: none; }
+    .menu-section.active { display: block; }
+    .menu-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 5rem; }
+    .menu-item {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; gap: 1rem;
+      padding: 1.4rem 0; border-bottom: 1px solid var(--subtle);
+    }
+    .mi-info { flex: 1; }
+    .mi-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; margin-bottom: 0.3rem;
+    }
+    .mi-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; font-style: italic; }
+    .mi-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--terra);
+      white-space: nowrap; padding-top: 0.1rem;
+    }
+    .menu-note {
+      text-align: center; margin-top: 2.5rem;
+      font-size: 0.78rem; color: var(--muted); font-style: italic;
+    }
+
+    /* ─── GALLERY ─── */
+    #galleri {
+      padding: 0 clamp(1.5rem,5vw,4rem) clamp(5rem,10vw,9rem);
+    }
+    .gallery-head {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .gallery-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem,4vw,3.25rem);
+      font-weight: 300;
+    }
+    .gallery-head h2 em { font-style: italic; color: var(--terra); }
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 260px;
+      gap: 3px;
+    }
+    .g-item { overflow: hidden; position: relative; }
+    .g-item.tall { grid-row: span 2; }
+    .g-img {
+      width: 100%; height: 100%;
+      transition: transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+      will-change: transform;
+    }
+    .g-item:hover .g-img { transform: scale(1.05); }
+    .gi1 { background: radial-gradient(ellipse 60% 55% at 45% 40%, #2e1c10 0%, #1c1008 65%, #100906 100%); }
+    .gi2 { background: radial-gradient(ellipse 55% 65% at 55% 50%, #3a1a0e 0%, #221008 65%, #140a06 100%); }
+    .gi3 { background: radial-gradient(ellipse 65% 55% at 40% 45%, #251810 0%, #180e08 65%, #100806 100%); }
+    .gi4 { background: radial-gradient(ellipse 60% 60% at 50% 55%, #2a1a0c 0%, #1c1008 65%, #120806 100%); }
+    .gi5 { background: radial-gradient(ellipse 70% 55% at 45% 40%, #321e10 0%, #1e1008 65%, #110806 100%); }
+
+    /* ─── BOOKING ─── */
+    #boka {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      background: var(--surface);
+    }
+    .book-inner { max-width: 780px; margin: 0 auto; }
+    .book-head { text-align: center; margin-bottom: 3rem; }
+    .book-head h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem,6vw,4rem);
+      font-weight: 300;
+    }
+    .book-head h2 em { font-style: italic; color: var(--terra); }
+    .book-head p { color: var(--muted); font-size: 0.9rem; margin-top: 0.75rem; }
+    .book-form { display: flex; flex-direction: column; gap: 1rem; }
+    .b-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .b-row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .fg { display: flex; flex-direction: column; gap: 0.45rem; }
+    .fg label {
+      font-size: 0.62rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .fg input, .fg select, .fg textarea {
+      background: var(--surface2); border: 1px solid var(--subtle);
+      color: var(--text); padding: 0.9rem 1rem;
+      font-family: 'Lato', sans-serif; font-size: 0.875rem;
+      transition: border-color 0.3s; outline: none;
+      -webkit-appearance: none; border-radius: 0; width: 100%;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color: var(--terra); }
+    .fg textarea { resize: vertical; min-height: 90px; }
+    .fg select option { background: var(--surface); }
+    .book-submit {
+      align-self: center; display: inline-flex;
+      align-items: center; gap: 0.75rem;
+      padding: 1.1rem 3rem; background: var(--terra);
+      color: var(--bg); font-family: 'Lato', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.2em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: background 0.3s; margin-top: 0.5rem;
+    }
+    .book-submit:hover { background: var(--terra-d); }
+
+    /* ─── INFO ─── */
+    #info {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--subtle);
+    }
+    .info-cell {
+      padding: clamp(2.5rem,5vw,4rem);
+      border-right: 1px solid var(--subtle);
+    }
+    .info-cell:last-child { border-right: none; }
+    .info-cell h3 {
+      font-size: 0.62rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--terra);
+      margin-bottom: 1.5rem;
+    }
+    .info-line {
+      display: flex; flex-direction: column; gap: 0.2rem;
+      margin-bottom: 0.85rem;
+    }
+    .il-key { font-size: 0.7rem; color: var(--muted); }
+    .il-val { font-size: 0.92rem; color: var(--text); }
+    .info-map {
+      grid-column: 1 / -1;
+      height: 200px; overflow: hidden;
+      background: radial-gradient(ellipse 80% 60% at 50% 60%, #1a1208 0%, #0e0906 100%);
+      border-top: 1px solid var(--subtle);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .info-map-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem; font-style: italic;
+      color: var(--muted); z-index: 1;
+    }
+    .info-map::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px),
+                  repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,0.02) 40px);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--surface);
+      border-top: 1px solid var(--subtle);
+      padding: clamp(2.5rem,5vw,3.5rem) clamp(1.5rem,5vw,4rem);
+    }
+    .f-top {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap;
+      gap: 2rem; padding-bottom: 2rem;
+      border-bottom: 1px solid var(--subtle);
+      margin-bottom: 1.75rem;
+    }
+    .f-logo-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; letter-spacing: 0.1em;
+      color: var(--text);
+    }
+    .f-tagline {
+      font-size: 0.65rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .f-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .f-nav a {
+      font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .f-nav a:hover { color: var(--terra); }
+    .f-bottom {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .f-copy { font-size: 0.68rem; color: var(--muted); }
+    .f-social { display: flex; gap: 1.5rem; }
+    .f-social a {
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .f-social a:hover { color: var(--terra); }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal {
+      opacity: 0; transform: translateY(30px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.45s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .gallery-grid { grid-template-columns: repeat(3,1fr); }
+      .gallery-grid .g-item:last-child { display: none; }
+      .b-row { grid-template-columns: 1fr 1fr; }
+      #info { grid-template-columns: 1fr 1fr; }
+      .info-map { grid-column: 1 / -1; }
+    }
+    @media (max-width: 840px) {
+      #story { grid-template-columns: 1fr; }
+      .story-img { min-height: 340px; }
+      .menu-cols { grid-template-columns: 1fr; }
+      .gallery-grid { grid-template-columns: repeat(2,1fr); grid-auto-rows: 220px; }
+      .g-item.tall { grid-row: span 1; }
+      #info { grid-template-columns: 1fr; }
+      .info-cell { border-right: none; border-bottom: 1px solid var(--subtle); }
+      .info-cell:last-child { border-bottom: none; }
+      .info-map { grid-column: 1 / -1; }
+    }
+    @media (max-width: 640px) {
+      .nav-left, .nav-right { display: none; }
+      .nav-center { position: relative; left: auto; transform: none; }
+      nav { justify-content: center; }
+      .nav-toggle { display: flex; position: absolute; right: clamp(1.5rem,5vw,4rem); }
+      .mob-menu { display: block; }
+      .gallery-grid { grid-template-columns: 1fr 1fr; }
+      .b-row { grid-template-columns: 1fr; }
+      .b-row-2 { grid-template-columns: 1fr; }
+      .hero-title { font-size: clamp(4rem,18vw,10rem); }
+      .menu-tabs .mtab { padding: 0.75rem 1.25rem; }
+      .f-top { flex-direction: column; align-items: center; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <ul class="nav-left">
+      <li><a href="#meny">Meny</a></li>
+      <li><a href="#story">Vår historia</a></li>
+    </ul>
+    <div class="nav-center">
+      <a href="#" class="nav-logo-main">FORNÄS</a>
+      <span class="nav-logo-sub">Restaurang &amp; Bar</span>
+    </div>
+    <ul class="nav-right">
+      <li><a href="#galleri">Galleri</a></li>
+      <li><a href="#boka" class="nav-res">Boka bord</a></li>
+    </ul>
+    <button class="nav-toggle" id="toggle" aria-label="Meny"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="mob-menu" id="mob">
+    <ul>
+      <li><a href="#story" class="ml">Vår historia</a></li>
+      <li><a href="#meny" class="ml">Meny</a></li>
+      <li><a href="#galleri" class="ml">Galleri</a></li>
+      <li><a href="#boka" class="ml">Boka bord</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Södermalm, Stockholm</div>
+      <h1 class="hero-title">FORNÄS</h1>
+      <div class="hero-divider"></div>
+      <p class="hero-sub">Nordisk kök, naturliga viner och en kväll du minns. Öppet kök, femtio platser.</p>
+      <div class="hero-ctas">
+        <a href="#boka" class="btn-terra">
+          Boka bord
+          <svg width="13" height="9" viewBox="0 0 13 9" fill="none"><path d="M1 4.5h11M8 1l3 3.5L8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#meny" class="btn-ghost">Se menyn</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scrolla</span>
+      <div class="scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="story">
+    <div class="story-img">
+      <div class="story-img-glow"></div>
+      <div class="story-img-caption">Köket på Hornsgatan, 2019</div>
+    </div>
+    <div class="story-body">
+      <div class="eyebrow reveal">Vår filosofi</div>
+      <h2 class="reveal d1">Enkelt, äkta,<br><em>säsongsbetonat</em></h2>
+      <p class="story-p reveal d2">Fornäs grundades 2019 med en enkel övertygelse: råvarorna berättar bäst när de behandlas med respekt. Vi jobbar med ett litet antal lokala producenter och ändrar menyn efter vad säsongen erbjuder.</p>
+      <p class="story-p reveal d2">Vårt öppna kök är hjärtat av restaurangen. Vi tror på transparens — du ska se och höra det händer, känna lukten av smör i pannan och veta att det du äter är gjort från grunden, just i kväll.</p>
+      <div class="story-meta reveal d3">
+        <div class="sm-item"><div class="sm-val">50</div><div class="sm-key">Platser</div></div>
+        <div class="sm-item"><div class="sm-val">2019</div><div class="sm-key">Grundat</div></div>
+        <div class="sm-item"><div class="sm-val">100%</div><div class="sm-key">Lokala råvaror</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section id="meny">
+    <div class="menu-head">
+      <h2 class="reveal">Kvällens <em>meny</em></h2>
+      <p class="reveal d1">Alla rätter tillagas à la minute. Meny ändras löpande efter säsong.</p>
+    </div>
+    <div class="menu-tabs reveal d1">
+      <button class="mtab active" data-tab="sma">Smårätter</button>
+      <button class="mtab" data-tab="varm">Varmrätter</button>
+      <button class="mtab" data-tab="dessert">Dessert</button>
+      <button class="mtab" data-tab="dryck">Dryck</button>
+    </div>
+
+    <div class="menu-section active reveal" id="tab-sma">
+      <div class="menu-cols">
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Rökt lax, pepparrot, kapris</div>
+              <div class="mi-desc">Kallrökt lax från Bohuslän, färsk pepparrot och inlagda kaprisfrukter</div>
+            </div>
+            <div class="mi-price">165 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Löjroms toast</div>
+              <div class="mi-desc">Rostad surdeg, crème fraîche, rödlök och löjrom från Kalix</div>
+            </div>
+            <div class="mi-price">195 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Tataki av nötfilé</div>
+              <div class="mi-desc">Snabbt stekt ytterfilé, sesam, ponzugelé och krutonger</div>
+            </div>
+            <div class="mi-price">185 kr</div>
+          </div>
+        </div>
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Charkbricka från Skansen</div>
+              <div class="mi-desc">Hantverksmässig chark, cornichoner och surdegsbröd</div>
+            </div>
+            <div class="mi-price">175 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Östers, 6 st</div>
+              <div class="mi-desc">Bretons med rödvinäger-shalottenlök och citron</div>
+            </div>
+            <div class="mi-price">215 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Svampbruschetta</div>
+              <div class="mi-desc">Stekt skogssvamp, tryffelolja, parmesan och örter</div>
+            </div>
+            <div class="mi-price">155 kr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section" id="tab-varm">
+      <div class="menu-cols">
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Hjortfilé, rotselleri, lingon</div>
+              <div class="mi-desc">Gotländsk hjort, rostad rotselleri, svampjus och lingonsås</div>
+            </div>
+            <div class="mi-price">375 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Pilgrimsmussla, blomkål</div>
+              <div class="mi-desc">Ishavsmusslor, bränt blomkål, citronbeurre blanc och kål</div>
+            </div>
+            <div class="mi-price">325 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Lammkotlett, morot, jus</div>
+              <div class="mi-desc">Halländskt lamm, glaserade morötter, örter och lammjus</div>
+            </div>
+            <div class="mi-price">395 kr</div>
+          </div>
+        </div>
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Torskrygg, ärtor, dill</div>
+              <div class="mi-desc">Färsk torsk, ärtpuré, brynt smör och örtolja</div>
+            </div>
+            <div class="mi-price">295 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Vegetarisk tasting (4 rätter)</div>
+              <div class="mi-desc">Kockens val av säsongens bästa grönsaker och svamp</div>
+            </div>
+            <div class="mi-price">345 kr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section" id="tab-dessert">
+      <div class="menu-cols">
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Havtornscheesecake</div>
+              <div class="mi-desc">Rostade mandlar, maräng och havtornskräm</div>
+            </div>
+            <div class="mi-price">155 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Chokladfondant</div>
+              <div class="mi-desc">Mörk choklad 70%, vaniljglass och saltkolasås</div>
+            </div>
+            <div class="mi-price">165 kr</div>
+          </div>
+        </div>
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Ostar från Östergötland</div>
+              <div class="mi-desc">Tre hantverksosta, honung, valnötter och kex</div>
+            </div>
+            <div class="mi-price">185 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Äppelsorbet, karamell</div>
+              <div class="mi-desc">Hussorbet på svenska äpplen, karamellsås och mynta</div>
+            </div>
+            <div class="mi-price">125 kr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-section" id="tab-dryck">
+      <div class="menu-cols">
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Husvin, vitt</div>
+              <div class="mi-desc">Naturligt, organiskt — fråga oss vad vi har idag</div>
+            </div>
+            <div class="mi-price">125 kr/glas</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Husvin, rött</div>
+              <div class="mi-desc">Naturligt, organiskt — fråga oss vad vi har idag</div>
+            </div>
+            <div class="mi-price">125 kr/glas</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Naturlig vinmeny (3 glas)</div>
+              <div class="mi-desc">Kockens val till din middag</div>
+            </div>
+            <div class="mi-price">325 kr</div>
+          </div>
+        </div>
+        <div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Hantverksöl, 33 cl</div>
+              <div class="mi-desc">Rotera utbud från svenska mikrobryggeri</div>
+            </div>
+            <div class="mi-price">95 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Alkoholfri vinmeny</div>
+              <div class="mi-desc">3 noggrant utvalda drycker utan alkohol</div>
+            </div>
+            <div class="mi-price">265 kr</div>
+          </div>
+          <div class="menu-item">
+            <div class="mi-info">
+              <div class="mi-name">Mineralvatten (tillkommer)</div>
+              <div class="mi-desc">Kolsyrat eller still</div>
+            </div>
+            <div class="mi-price">45 kr</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="menu-note reveal">Informera oss gärna om allergier eller kostrestriktioner vid bokning. Vi anpassar oss med glädje.</p>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="galleri">
+    <div class="gallery-head">
+      <h2 class="reveal">Stämningen på <em>Fornäs</em></h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="g-item tall reveal">
+        <div class="g-img gi1"></div>
+      </div>
+      <div class="g-item reveal d1">
+        <div class="g-img gi2"></div>
+      </div>
+      <div class="g-item reveal d2">
+        <div class="g-img gi3"></div>
+      </div>
+      <div class="g-item reveal d1">
+        <div class="g-img gi4"></div>
+      </div>
+      <div class="g-item reveal d3">
+        <div class="g-img gi5"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOOKING -->
+  <section id="boka">
+    <div class="book-inner">
+      <div class="book-head">
+        <div class="eyebrow reveal">Reservationer</div>
+        <h2 class="reveal d1">Boka ditt <em>bord</em></h2>
+        <p class="reveal d2">Vi svarar på bokningar vardagar 10–17. Vid kortare varsel, ring oss direkt.</p>
+      </div>
+      <form class="book-form reveal d2" onsubmit="return false">
+        <div class="b-row">
+          <div class="fg">
+            <label>Datum</label>
+            <input type="date">
+          </div>
+          <div class="fg">
+            <label>Tid</label>
+            <select>
+              <option value="">Välj tid</option>
+              <option>17:30</option>
+              <option>18:00</option>
+              <option>18:30</option>
+              <option>19:00</option>
+              <option>19:30</option>
+              <option>20:00</option>
+              <option>20:30</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Antal gäster</label>
+            <select>
+              <option value="">Antal</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+              <option>6</option>
+              <option>7–10 (kontakta oss)</option>
+            </select>
+          </div>
+        </div>
+        <div class="b-row-2">
+          <div class="fg">
+            <label>Namn</label>
+            <input type="text" placeholder="Ditt namn">
+          </div>
+          <div class="fg">
+            <label>Telefon</label>
+            <input type="tel" placeholder="070 – XXX XX XX">
+          </div>
+        </div>
+        <div class="fg">
+          <label>E-post</label>
+          <input type="email" placeholder="din@epost.se">
+        </div>
+        <div class="fg">
+          <label>Önskemål / allergier</label>
+          <textarea placeholder="Meddela gärna eventuella allergier, födelsedagar eller andra önskemål..."></textarea>
+        </div>
+        <button class="book-submit" type="submit">
+          Bekräfta bokning
+          <svg width="13" height="9" viewBox="0 0 13 9" fill="none"><path d="M1 4.5h11M8 1l3 3.5L8 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- INFO -->
+  <section id="info">
+    <div class="info-cell">
+      <h3>Hitta hit</h3>
+      <div class="info-line"><div class="il-key">Adress</div><div class="il-val">Hornsgatan 84</div></div>
+      <div class="info-line"><div class="il-key">Stad</div><div class="il-val">118 21 Stockholm</div></div>
+      <div class="info-line"><div class="il-key">Tunnelbana</div><div class="il-val">Hornstull (grön linje)</div></div>
+    </div>
+    <div class="info-cell">
+      <h3>Öppettider</h3>
+      <div class="info-line"><div class="il-key">Onsdag – Torsdag</div><div class="il-val">17:30 – 22:30</div></div>
+      <div class="info-line"><div class="il-key">Fredag – Lördag</div><div class="il-val">17:30 – 23:00</div></div>
+      <div class="info-line"><div class="il-key">Söndag – Tisdag</div><div class="il-val">Stängt</div></div>
+    </div>
+    <div class="info-cell">
+      <h3>Kontakt</h3>
+      <div class="info-line"><div class="il-key">Telefon</div><div class="il-val">08 – 640 12 34</div></div>
+      <div class="info-line"><div class="il-key">E-post</div><div class="il-val">hej@fornas.se</div></div>
+      <div class="info-line"><div class="il-key">Instagram</div><div class="il-val">@fornas_sthlm</div></div>
+    </div>
+    <div class="info-map">
+      <div class="info-map-label">Hornsgatan 84, Södermalm</div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-top">
+      <div>
+        <div class="f-logo-main">FORNÄS</div>
+        <div class="f-tagline">Restaurang &amp; Bar — Södermalm</div>
+      </div>
+      <div class="f-nav">
+        <a href="#story">Historia</a>
+        <a href="#meny">Meny</a>
+        <a href="#galleri">Galleri</a>
+        <a href="#boka">Boka bord</a>
+        <a href="#info">Hitta hit</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <div class="f-copy">© 2024 Fornäs AB — Hornsgatan 84, Stockholm</div>
+      <div class="f-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    const heroBg = document.getElementById('heroBg');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+      if (heroBg && window.scrollY < window.innerHeight) {
+        heroBg.style.transform = `translateY(${window.scrollY * 0.25}px)`;
+      }
+    }, { passive: true });
+
+    // Mobile menu
+    const toggle = document.getElementById('toggle');
+    const mob = document.getElementById('mob');
+    toggle.addEventListener('click', () => {
+      const open = toggle.classList.toggle('open');
+      mob.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      mob.classList.remove('open');
+      document.body.style.overflow = '';
+    }));
+
+    // Menu tabs
+    document.querySelectorAll('.mtab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        const id = tab.dataset.tab;
+        document.querySelectorAll('.mtab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.menu-section').forEach(s => s.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById('tab-' + id).classList.add('active');
+      });
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.07, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

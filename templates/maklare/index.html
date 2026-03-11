@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Karin Sjöberg — Fastighetsmäklare Östermalm</title>
+  <meta name="description" content="Auktoriserad fastighetsmäklare med fokus på Östermalm, Djurgården och Lidingö. Personlig service och djup lokal kunskap sedan 2009.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #faf8f5;
+      --white: #ffffff;
+      --charcoal: #1c1c1c;
+      --text: #2e2e2e;
+      --muted: #7a7870;
+      --subtle: #e8e4de;
+      --subtle2: #f2ede8;
+      --copper: #a0612a;
+      --copper-l: #c07838;
+      --nav-h: 76px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem,5vw,4rem);
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(250,248,245,0.95);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 1px 0 var(--subtle);
+    }
+    .nav-logo {
+      display: flex; flex-direction: column; gap: 1px;
+      text-decoration: none;
+    }
+    .nl-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem; font-weight: 400;
+      color: var(--charcoal); letter-spacing: 0.02em;
+    }
+    .nl-title {
+      font-size: 0.62rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .nav-links { display: flex; gap: 2.25rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--muted);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--charcoal); }
+    .nav-cta {
+      padding: 0.65rem 1.5rem;
+      background: var(--copper); color: #fff;
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      text-transform: uppercase; text-decoration: none;
+      transition: background 0.3s;
+    }
+    .nav-cta:hover { background: var(--copper-l); color: #fff !important; }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      cursor: pointer; background: none; border: none; padding: 4px;
+    }
+    .nav-toggle span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--charcoal);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mob-menu {
+      display: none; position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(250,248,245,0.98);
+      backdrop-filter: blur(20px);
+      padding: 2rem clamp(1.5rem,5vw,4rem) 2.5rem;
+      z-index: 99; box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transform: translateY(-110%);
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1);
+    }
+    .mob-menu.open { transform: translateY(0); }
+    .mob-menu ul { list-style: none; display: flex; flex-direction: column; gap: 1.5rem; }
+    .mob-menu a {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.75rem; color: var(--charcoal); text-decoration: none;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative; min-height: 100dvh;
+      display: flex; align-items: center;
+      padding: var(--nav-h) clamp(1.5rem,5vw,4rem) 0;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 55% at 75% 45%, #f0e8d8 0%, transparent 65%),
+        linear-gradient(160deg, #faf8f5 0%, #f5f0e8 100%);
+      will-change: transform;
+    }
+    .hero-decor {
+      position: absolute; right: 0; top: 0; bottom: 0;
+      width: 42vw; overflow: hidden;
+    }
+    .hero-decor-img {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 40% 50%, #e8d8c0 0%, #c8b090 60%, #a89070 100%);
+    }
+    .hero-decor::after {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0; width: 120px;
+      background: linear-gradient(to right, var(--bg), transparent);
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      max-width: 600px; padding: clamp(4rem,10vh,7rem) 0;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.65rem;
+      font-size: 0.65rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--copper);
+      margin-bottom: 2rem;
+    }
+    .hero-tag-dot { width: 6px; height: 6px; background: var(--copper); border-radius: 50%; }
+    .hero-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.6rem,6vw,5rem);
+      font-weight: 400; line-height: 1.12;
+      color: var(--charcoal); margin-bottom: 1.5rem;
+      letter-spacing: -0.01em;
+    }
+    .hero-title em { font-style: italic; color: var(--copper); }
+    .hero-sub {
+      font-size: clamp(0.9rem,1.5vw,1.05rem);
+      color: var(--muted); line-height: 1.8;
+      max-width: 440px; margin-bottom: 2.75rem;
+    }
+    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2rem; background: var(--charcoal);
+      color: #fff; font-size: 0.72rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      text-decoration: none; transition: background 0.3s;
+    }
+    .btn-primary:hover { background: var(--copper); }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 2rem; border: 1.5px solid var(--subtle);
+      color: var(--text); font-size: 0.72rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      text-decoration: none; transition: border-color 0.3s, color 0.3s;
+    }
+    .btn-secondary:hover { border-color: var(--copper); color: var(--copper); }
+    .hero-stats {
+      display: flex; gap: 2.5rem; margin-top: 3rem;
+      padding-top: 2rem; border-top: 1px solid var(--subtle);
+      flex-wrap: wrap;
+    }
+    .h-stat-n {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2rem; color: var(--charcoal); line-height: 1;
+    }
+    .h-stat-l { font-size: 0.7rem; color: var(--muted); margin-top: 0.3rem; }
+
+    /* ─── LISTINGS ─── */
+    #objekt {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      background: var(--white);
+    }
+    .sec-header {
+      display: flex; align-items: flex-end;
+      justify-content: space-between; flex-wrap: wrap;
+      gap: 1.5rem; margin-bottom: 3rem;
+    }
+    .sec-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem,4vw,3rem);
+      font-weight: 400; color: var(--charcoal);
+      line-height: 1.1; letter-spacing: -0.01em;
+    }
+    .sec-title em { font-style: italic; color: var(--copper); }
+    .see-all {
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--copper);
+      text-decoration: none; display: flex; align-items: center; gap: 0.5rem;
+      transition: gap 0.3s;
+    }
+    .see-all:hover { gap: 0.85rem; }
+    .listings { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+    .listing {
+      background: var(--bg); cursor: pointer;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1),
+                  box-shadow 0.35s;
+      will-change: transform;
+    }
+    .listing:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+      z-index: 1; position: relative;
+    }
+    .listing-img {
+      height: 240px; overflow: hidden; position: relative;
+    }
+    .listing-img-bg {
+      width: 100%; height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
+      will-change: transform;
+    }
+    .listing:hover .listing-img-bg { transform: scale(1.04); }
+    .li1 { background: radial-gradient(ellipse 70% 60% at 50% 40%, #e8d8c0 0%, #d0b898 50%, #b89870 100%); }
+    .li2 { background: radial-gradient(ellipse 60% 70% at 40% 50%, #d8e0e8 0%, #c0ccd8 50%, #a0b0c0 100%); }
+    .li3 { background: radial-gradient(ellipse 65% 60% at 55% 40%, #e0d4c0 0%, #c8b89a 55%, #b0987a 100%); }
+    .listing-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--charcoal); color: #fff;
+      font-size: 0.58rem; letter-spacing: 0.18em;
+      text-transform: uppercase; padding: 0.3rem 0.7rem;
+    }
+    .listing-body { padding: 1.5rem; }
+    .listing-addr {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem; font-weight: 400;
+      color: var(--charcoal); margin-bottom: 0.35rem;
+    }
+    .listing-area {
+      font-size: 0.72rem; color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .listing-meta {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+      padding-top: 1rem; border-top: 1px solid var(--subtle);
+    }
+    .lm-item { display: flex; flex-direction: column; gap: 0.15rem; }
+    .lm-val {
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--charcoal);
+    }
+    .lm-key { font-size: 0.62rem; color: var(--muted); letter-spacing: 0.05em; }
+    .listing-price {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem; color: var(--copper);
+      font-weight: 400; margin-top: 1rem;
+    }
+
+    /* ─── ABOUT ─── */
+    #om {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: 600px;
+    }
+    .om-img {
+      position: relative; overflow: hidden; min-height: 500px;
+      background: radial-gradient(ellipse 65% 70% at 45% 40%, #d8c8a8 0%, #c0a880 55%, #a89060 100%);
+    }
+    .om-img::after {
+      content: ''; position: absolute;
+      bottom: 2rem; left: 2rem; right: 2rem;
+      height: 1px; background: rgba(255,255,255,0.25);
+    }
+    .om-copper-bar {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px; background: var(--copper);
+    }
+    .om-body {
+      background: var(--charcoal); color: #f0ece5;
+      padding: clamp(3rem,7vw,6rem);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .om-body .eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.28em;
+      text-transform: uppercase; color: var(--copper);
+      margin-bottom: 1.5rem;
+    }
+    .om-body h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem,4vw,3rem);
+      font-weight: 400; line-height: 1.1;
+      margin-bottom: 1.5rem; letter-spacing: -0.01em;
+    }
+    .om-body h2 em { font-style: italic; color: var(--copper); }
+    .om-body p { color: rgba(240,236,229,0.65); font-size: 0.9rem; line-height: 1.85; margin-bottom: 1.1rem; }
+    .om-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,0.1); margin-top: 1rem;
+    }
+    .om-stat-n {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2.2rem; color: var(--copper); line-height: 1;
+    }
+    .om-stat-l { font-size: 0.68rem; color: rgba(240,236,229,0.5); margin-top: 0.3rem; }
+
+    /* ─── TESTIMONIALS ─── */
+    #omdomen {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      background: var(--subtle2);
+    }
+    .t-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; margin-top: 3rem;
+    }
+    .t-card {
+      background: var(--white); padding: 2.5rem;
+      position: relative;
+    }
+    .t-quote {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 3rem; color: var(--copper);
+      line-height: 1; margin-bottom: 1rem; opacity: 0.4;
+    }
+    .t-text {
+      font-size: 0.9rem; line-height: 1.8;
+      color: var(--muted); margin-bottom: 1.5rem;
+      font-style: italic;
+    }
+    .t-author {
+      display: flex; align-items: center; gap: 0.75rem;
+      padding-top: 1.25rem; border-top: 1px solid var(--subtle);
+    }
+    .t-avatar {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: radial-gradient(ellipse at 40% 35%, #d0c0a0 0%, #b0a080 100%);
+      flex-shrink: 0;
+    }
+    .t-name { font-size: 0.85rem; font-weight: 500; color: var(--charcoal); }
+    .t-loc { font-size: 0.68rem; color: var(--muted); margin-top: 0.1rem; }
+
+    /* ─── VALUATION ─── */
+    #vardering {
+      padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem);
+      background: var(--copper); color: #fff;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    #vardering::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(255,255,255,0.07) 0%, transparent 70%);
+    }
+    .val-inner { position: relative; z-index: 1; max-width: 700px; margin: 0 auto; }
+    .val-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: rgba(255,255,255,0.65);
+      margin-bottom: 1.5rem;
+    }
+    #vardering h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.5rem,5vw,4rem);
+      font-weight: 400; line-height: 1.1;
+      margin-bottom: 1.25rem; letter-spacing: -0.01em;
+    }
+    #vardering p { color: rgba(255,255,255,0.75); font-size: 1rem; margin-bottom: 2.5rem; }
+    .val-form { display: flex; gap: 0; max-width: 520px; margin: 0 auto; }
+    .val-input {
+      flex: 1; padding: 1.05rem 1.25rem;
+      background: rgba(255,255,255,0.15); border: 1.5px solid rgba(255,255,255,0.3);
+      border-right: none; color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 0.9rem; outline: none;
+      transition: background 0.3s, border-color 0.3s;
+      -webkit-appearance: none; border-radius: 0;
+    }
+    .val-input::placeholder { color: rgba(255,255,255,0.5); }
+    .val-input:focus { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.7); }
+    .val-btn {
+      padding: 1.05rem 1.75rem; background: var(--charcoal);
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: background 0.3s; white-space: nowrap;
+    }
+    .val-btn:hover { background: #000; }
+
+    /* ─── CONTACT ─── */
+    #kontakt { padding: clamp(5rem,10vw,9rem) clamp(1.5rem,5vw,4rem); background: var(--white); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 5rem; }
+    .c-left h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem,4vw,3rem);
+      font-weight: 400; line-height: 1.1;
+      color: var(--charcoal); margin-bottom: 1.25rem;
+    }
+    .c-left h2 em { font-style: italic; color: var(--copper); }
+    .c-left p { color: var(--muted); font-size: 0.9rem; line-height: 1.8; margin-bottom: 2rem; }
+    .c-info { display: flex; flex-direction: column; gap: 1.25rem; }
+    .c-info-row { display: flex; gap: 1rem; align-items: flex-start; }
+    .c-info-icon {
+      width: 36px; height: 36px;
+      background: var(--subtle2); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .c-info-icon svg { width: 14px; height: 14px; stroke: var(--copper); }
+    .c-info-lbl { font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+    .c-info-val { font-size: 0.9rem; color: var(--charcoal); margin-top: 0.15rem; }
+    .c-form { display: flex; flex-direction: column; gap: 1.1rem; }
+    .c-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .c-fg { display: flex; flex-direction: column; gap: 0.45rem; }
+    .c-fg label {
+      font-size: 0.62rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .c-fg input, .c-fg textarea, .c-fg select {
+      background: var(--bg); border: 1.5px solid var(--subtle);
+      color: var(--text); padding: 0.875rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.875rem;
+      transition: border-color 0.3s; outline: none;
+      -webkit-appearance: none; border-radius: 0; width: 100%;
+    }
+    .c-fg input:focus, .c-fg textarea:focus, .c-fg select:focus { border-color: var(--copper); }
+    .c-fg textarea { resize: vertical; min-height: 110px; }
+    .c-submit {
+      align-self: flex-start; display: inline-flex;
+      align-items: center; gap: 0.75rem;
+      padding: 1rem 2.25rem; background: var(--charcoal);
+      color: #fff; font-family: 'Inter', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: background 0.3s;
+    }
+    .c-submit:hover { background: var(--copper); }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--charcoal); color: #f0ece5;
+      padding: 3rem clamp(1.5rem,5vw,4rem);
+    }
+    .f-top {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; flex-wrap: wrap; gap: 2rem;
+      padding-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+      margin-bottom: 2rem;
+    }
+    .f-logo-wrap .nl-name { color: #f0ece5; font-size: 1.1rem; }
+    .f-logo-wrap .nl-title { color: rgba(240,236,229,0.5); }
+    .f-nav { display: flex; gap: 2rem; flex-wrap: wrap; }
+    .f-nav a {
+      font-size: 0.7rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(240,236,229,0.5);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .f-nav a:hover { color: var(--copper); }
+    .f-bottom {
+      display: flex; align-items: center;
+      justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .f-copy { font-size: 0.68rem; color: rgba(240,236,229,0.35); }
+    .f-reg { font-size: 0.68rem; color: rgba(240,236,229,0.35); }
+
+    /* ─── ANIMATIONS ─── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.85s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.85s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .hero-decor { width: 38vw; }
+      .listings { grid-template-columns: 1fr 1fr; }
+      .listings .listing:last-child { grid-column: span 2; }
+    }
+    @media (max-width: 840px) {
+      #om { grid-template-columns: 1fr; }
+      .om-img { min-height: 350px; }
+      .t-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-decor { display: none; }
+    }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .mob-menu { display: block; }
+      .listings { grid-template-columns: 1fr; }
+      .listings .listing:last-child { grid-column: span 1; }
+      .om-stats { grid-template-columns: 1fr; }
+      .c-row { grid-template-columns: 1fr; }
+      .val-form { flex-direction: column; }
+      .val-input { border-right: 1.5px solid rgba(255,255,255,0.3); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <a href="#" class="nav-logo">
+      <span class="nl-name">Karin Sjöberg</span>
+      <span class="nl-title">Fastighetsmäklare</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#objekt">Objekt</a></li>
+      <li><a href="#om">Om Karin</a></li>
+      <li><a href="#omdomen">Omdömen</a></li>
+      <li><a href="#vardering" class="nav-cta">Fri värdering</a></li>
+    </ul>
+    <button class="nav-toggle" id="toggle" aria-label="Meny">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mob-menu" id="mob">
+    <ul>
+      <li><a href="#objekt" class="ml">Objekt</a></li>
+      <li><a href="#om" class="ml">Om Karin</a></li>
+      <li><a href="#omdomen" class="ml">Omdömen</a></li>
+      <li><a href="#vardering" class="ml">Fri värdering</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg" id="heroBg"></div>
+    <div class="hero-decor">
+      <div class="hero-decor-img"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        Auktoriserad fastighetsmäklare
+      </div>
+      <h1 class="hero-title">
+        Din mäklare på<br>
+        <em>Östermalm</em>
+      </h1>
+      <p class="hero-sub">Personlig service, djup lokal kunskap och ett genuint engagemang för att hitta rätt hem till rätt person. Sedan 2009.</p>
+      <div class="hero-btns">
+        <a href="#objekt" class="btn-primary">
+          Se aktuella objekt
+          <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 4.5h12M8.5 1l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#vardering" class="btn-secondary">Fri värdering</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="h-stat-n">250+</div>
+          <div class="h-stat-l">Sålda objekt</div>
+        </div>
+        <div>
+          <div class="h-stat-n">15 år</div>
+          <div class="h-stat-l">Erfarenhet</div>
+        </div>
+        <div>
+          <div class="h-stat-n">4,9/5</div>
+          <div class="h-stat-l">Kundbetyg</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LISTINGS -->
+  <section id="objekt">
+    <div class="sec-header">
+      <h2 class="sec-title reveal">Aktuella<br><em>objekt</em></h2>
+      <a href="#" class="see-all reveal d1">
+        Visa alla objekt
+        <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 4.5h12M8.5 1l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+    <div class="listings">
+      <div class="listing reveal">
+        <div class="listing-img">
+          <div class="listing-img-bg li1"></div>
+          <div class="listing-badge">Ny</div>
+        </div>
+        <div class="listing-body">
+          <div class="listing-addr">Strandvägen 7A</div>
+          <div class="listing-area">Östermalm, Stockholm</div>
+          <div class="listing-meta">
+            <div class="lm-item"><div class="lm-val">5 rum</div><div class="lm-key">Rum</div></div>
+            <div class="lm-item"><div class="lm-val">142 m²</div><div class="lm-key">Boyta</div></div>
+            <div class="lm-item"><div class="lm-val">3:e vån</div><div class="lm-key">Våning</div></div>
+          </div>
+          <div class="listing-price">14 500 000 kr</div>
+        </div>
+      </div>
+      <div class="listing reveal d1">
+        <div class="listing-img">
+          <div class="listing-img-bg li2"></div>
+          <div class="listing-badge">Kommande</div>
+        </div>
+        <div class="listing-body">
+          <div class="listing-addr">Karlavägen 32</div>
+          <div class="listing-area">Östermalm, Stockholm</div>
+          <div class="listing-meta">
+            <div class="lm-item"><div class="lm-val">4 rum</div><div class="lm-key">Rum</div></div>
+            <div class="lm-item"><div class="lm-val">98 m²</div><div class="lm-key">Boyta</div></div>
+            <div class="lm-item"><div class="lm-val">2:a vån</div><div class="lm-key">Våning</div></div>
+          </div>
+          <div class="listing-price">9 800 000 kr</div>
+        </div>
+      </div>
+      <div class="listing reveal d2">
+        <div class="listing-img">
+          <div class="listing-img-bg li3"></div>
+          <div class="listing-badge">Villa</div>
+        </div>
+        <div class="listing-body">
+          <div class="listing-addr">Lidingö — Brevik</div>
+          <div class="listing-area">Lidingö, Stockholm</div>
+          <div class="listing-meta">
+            <div class="lm-item"><div class="lm-val">6 rum</div><div class="lm-key">Rum</div></div>
+            <div class="lm-item"><div class="lm-val">190 m²</div><div class="lm-key">Boyta</div></div>
+            <div class="lm-item"><div class="lm-val">800 m²</div><div class="lm-key">Tomt</div></div>
+          </div>
+          <div class="listing-price">19 900 000 kr</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="om">
+    <div class="om-img"><div class="om-copper-bar"></div></div>
+    <div class="om-body">
+      <div class="eyebrow reveal">Om Karin</div>
+      <h2 class="reveal d1">Mäklaren som <em>lyssnar</em></h2>
+      <p class="reveal d2">Med 15 år på Östermalm och Djurgården har jag lärt mig att varje fastighetsaffär är unik. Det handlar inte bara om kvadratmeter — det handlar om att förstå vad som är viktigt för just dig.</p>
+      <p class="reveal d2">Jag är auktoriserad fastighetsmäklare (SFM) och arbetar uteslutande med ett fåtal utvalda kunder åt gången, för att kunna erbjuda genuint personlig service från visning till nyckelöverlämning.</p>
+      <div class="om-stats reveal d3">
+        <div><div class="om-stat-n">250+</div><div class="om-stat-l">Sålda objekt</div></div>
+        <div><div class="om-stat-n">2,8 mdr</div><div class="om-stat-l">Totalvärde</div></div>
+        <div><div class="om-stat-n">4,9</div><div class="om-stat-l">Snittbetyg</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="omdomen">
+    <div class="sec-header">
+      <h2 class="sec-title reveal">Vad <em>kunderna</em><br>säger</h2>
+    </div>
+    <div class="t-grid">
+      <div class="t-card reveal">
+        <div class="t-quote">"</div>
+        <p class="t-text">Karin sålde vår lägenhet på Strandvägen snabbare än vi troddde var möjligt, och till ett pris som översteg utgångspriset rejält. Hennes lokalkännedom och kontaktnät är i en helt annan klass.</p>
+        <div class="t-author">
+          <div class="t-avatar"></div>
+          <div>
+            <div class="t-name">Magnus &amp; Lotta Eklund</div>
+            <div class="t-loc">Östermalm — Sålt 5 rok, 145 m²</div>
+          </div>
+        </div>
+      </div>
+      <div class="t-card reveal d1">
+        <div class="t-quote">"</div>
+        <p class="t-text">Vi köpte vår drömvilla på Lidingö genom Karin. Hon förstod direkt vad vi letade efter och guidade oss trygg igenom hela processen. Vi kände oss aldrig som "bara en kund".</p>
+        <div class="t-author">
+          <div class="t-avatar"></div>
+          <div>
+            <div class="t-name">Johanna Strand</div>
+            <div class="t-loc">Lidingö — Köpt villa, 190 m²</div>
+          </div>
+        </div>
+      </div>
+      <div class="t-card reveal d2">
+        <div class="t-quote">"</div>
+        <p class="t-text">Professionell, lättillgänglig och alltid ärlig. Karin gav oss en realistisk bild av marknaden och levererade sedan exakt vad hon lovade. Steg efter steg utan krångel.</p>
+        <div class="t-author">
+          <div class="t-avatar"></div>
+          <div>
+            <div class="t-name">Henrik Wallin</div>
+            <div class="t-loc">Djurgården — Sålt 4 rok, 102 m²</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUATION -->
+  <section id="vardering">
+    <div class="val-inner">
+      <div class="val-eyebrow">Kostnadsfri tjänst</div>
+      <h2 class="reveal">Hur mycket är<br>din bostad värd?</h2>
+      <p class="reveal d1">Fyll i din adress så kontaktar jag dig inom 24 timmar med en preliminär marknadsvärdering — utan förbindelser.</p>
+      <div class="val-form reveal d2">
+        <input class="val-input" type="text" placeholder="Din gatuadress, t.ex. Karlavägen 12">
+        <button class="val-btn" type="button">Få värdering</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="kontakt">
+    <div class="contact-grid">
+      <div class="c-left">
+        <div class="eyebrow" style="color:var(--copper);font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;margin-bottom:1.5rem;" class="reveal">Kontakta Karin</div>
+        <h2 class="reveal d1">Dags att ta <em>nästa steg?</em></h2>
+        <p class="reveal d2">Oavsett om du funderar på att sälja, köpa eller bara vill ha ett samtal om marknaden — hör gärna av dig.</p>
+        <div class="c-info reveal d3">
+          <div class="c-info-row">
+            <div class="c-info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9 6 9-6M5 6h14a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+            </div>
+            <div>
+              <div class="c-info-lbl">E-post</div>
+              <div class="c-info-val">karin@sjobergmakleri.se</div>
+            </div>
+          </div>
+          <div class="c-info-row">
+            <div class="c-info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.03 5.23 2 2 0 012 3h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 10.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+            </div>
+            <div>
+              <div class="c-info-lbl">Telefon</div>
+              <div class="c-info-val">070 – 123 45 67</div>
+            </div>
+          </div>
+          <div class="c-info-row">
+            <div class="c-info-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div>
+              <div class="c-info-lbl">Kontor</div>
+              <div class="c-info-val">Stureplan 4, Stockholm</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form class="c-form reveal d2" onsubmit="return false">
+        <div class="c-row">
+          <div class="c-fg"><label>Namn</label><input type="text" placeholder="Ditt namn"></div>
+          <div class="c-fg"><label>Telefon</label><input type="tel" placeholder="070 – XXX XX XX"></div>
+        </div>
+        <div class="c-fg"><label>E-post</label><input type="email" placeholder="din@epost.se"></div>
+        <div class="c-fg">
+          <label>Ärende</label>
+          <select>
+            <option value="">Välj ärende</option>
+            <option>Jag vill sälja</option>
+            <option>Jag vill köpa</option>
+            <option>Fri värdering</option>
+            <option>Allmän fråga</option>
+          </select>
+        </div>
+        <div class="c-fg"><label>Meddelande</label><textarea placeholder="Berätta mer om vad du söker..."></textarea></div>
+        <button class="c-submit" type="submit">
+          Skicka meddelande
+          <svg width="14" height="9" viewBox="0 0 14 9" fill="none"><path d="M1 4.5h12M8.5 1l3 3.5-3 3.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="f-top">
+      <div class="f-logo-wrap">
+        <div class="nl-name">Karin Sjöberg</div>
+        <div class="nl-title">Auktoriserad Fastighetsmäklare</div>
+      </div>
+      <div class="f-nav">
+        <a href="#objekt">Objekt</a>
+        <a href="#om">Om Karin</a>
+        <a href="#omdomen">Omdömen</a>
+        <a href="#vardering">Fri värdering</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <div class="f-copy">© 2024 Karin Sjöberg Mäkleri AB</div>
+      <div class="f-reg">Reg. fastighetsmäklare — SFM</div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    const toggle = document.getElementById('toggle');
+    const mob = document.getElementById('mob');
+    toggle.addEventListener('click', () => {
+      const open = toggle.classList.toggle('open');
+      mob.classList.toggle('open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    });
+    document.querySelectorAll('.ml').forEach(l => l.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      mob.classList.remove('open');
+      document.body.style.overflow = '';
+    }));
+
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+  </script>
+</body>
+</html>

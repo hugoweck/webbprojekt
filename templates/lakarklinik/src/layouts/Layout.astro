@@ -1,0 +1,145 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = 'Norrmalms Läkarklinik — Privat sjukvård i Stockholm. Boka tid online.',
+} = Astro.props;
+
+const pathname = Astro.url.pathname;
+const isActive = (path: string) =>
+  path === '/' ? pathname === '/' || pathname === '' : pathname.startsWith(path);
+---
+
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} — Norrmalms Läkarklinik</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav id="nav">
+    <a href="/" class="nav-logo">
+      <span class="nav-logo-name">Norrmalms Läkarklinik</span>
+      <span class="nav-logo-sub">Privat sjukvård · Stockholm</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="/" class={isActive('/') ? 'active' : ''}>Hem</a></li>
+      <li><a href="/tjanster" class={isActive('/tjanster') ? 'active' : ''}>Tjänster</a></li>
+      <li><a href="/om-oss" class={isActive('/om-oss') ? 'active' : ''}>Om oss</a></li>
+      <li><a href="/boka" class="nav-book">Boka tid →</a></li>
+    </ul>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Öppna meny">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mob-menu" id="mobMenu">
+    <ul>
+      <li><a href="/" class={`ml ${isActive('/') ? 'active' : ''}`}>Hem</a></li>
+      <li><a href="/tjanster" class={`ml ${isActive('/tjanster') ? 'active' : ''}`}>Tjänster</a></li>
+      <li><a href="/om-oss" class={`ml ${isActive('/om-oss') ? 'active' : ''}`}>Om oss</a></li>
+      <li><a href="/boka" class="ml" style="color:var(--teal)">Boka tid</a></li>
+    </ul>
+  </div>
+
+  <!-- PAGE CONTENT -->
+  <main>
+    <slot />
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-main">
+      <div class="footer-brand">
+        <div class="footer-brand-name">Norrmalms Läkarklinik</div>
+        <div class="footer-brand-tag">Privat sjukvård</div>
+        <p class="footer-brand-desc">Modern privatklinik med fokus på tillgänglighet, kompetens och personlig omsorg. Vi välkomnar nya patienter.</p>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Tjänster</div>
+        <ul>
+          <li><a href="/tjanster">Allmänläkare</a></li>
+          <li><a href="/tjanster">Hälsoundersökning</a></li>
+          <li><a href="/tjanster">Psykologi</a></li>
+          <li><a href="/tjanster">Dermatologi</a></li>
+          <li><a href="/tjanster">Digital konsultation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Kliniken</div>
+        <ul>
+          <li><a href="/om-oss">Om oss</a></li>
+          <li><a href="/om-oss">Vårt team</a></li>
+          <li><a href="/om-oss">Värderingar</a></li>
+          <li><a href="/boka">Boka tid</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <div class="footer-col-title">Kontakt</div>
+        <ul>
+          <li><a href="tel:0812345678">08 – 123 456 78</a></li>
+          <li><a href="mailto:info@norrmalmslakar.se">info@norrmalmslakar.se</a></li>
+          <li><a href="/boka">Kungsgatan 42, Stockholm</a></li>
+          <li><a href="#">Mån–Fre 08–18</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2024 Norrmalms Läkarklinik AB · Org.nr 556XXX-XXXX</div>
+      <div class="footer-reg">Auktoriserad av IVO · GDPR-certifierad</div>
+    </div>
+  </footer>
+
+</body>
+</html>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('nav')!;
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Mobile menu
+  const toggle = document.getElementById('navToggle')!;
+  const menu = document.getElementById('mobMenu')!;
+  toggle.addEventListener('click', () => {
+    const open = toggle.classList.toggle('open');
+    menu.classList.toggle('open', open);
+    document.body.style.overflow = open ? 'hidden' : '';
+  });
+  document.querySelectorAll('.ml').forEach(link => {
+    link.addEventListener('click', () => {
+      toggle.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>

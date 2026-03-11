@@ -3,18 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mitt Webbprojekt</title>
+  <title>Energiärenden — Länsstyrelsen Sverige</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>Hej, världen!</h1>
-    <p>Välkommen till mitt enkla webbprojekt.</p>
-  </header>
-  <main>
-    <button id="btn">Klicka på mig</button>
-    <p id="meddelande"></p>
-  </main>
+
+  <!-- Ambient background glows -->
+  <div class="amb-glow g1"></div>
+  <div class="amb-glow g2"></div>
+  <div class="amb-glow g3"></div>
+
+  <!-- Top navigation -->
+  <nav class="topnav">
+    <div class="brand">
+      <div class="brand-mark">LST</div>
+      <div class="brand-text">
+        <span class="brand-name">Energiärenden</span>
+        <span class="brand-sub">Länsstyrelsen Sverige</span>
+      </div>
+    </div>
+    <div class="nav-stats">
+      <div class="nav-stat">
+        <span class="nav-stat-val" id="navTotal">25</span>
+        <span class="nav-stat-lbl">projekt</span>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-stat">
+        <span class="nav-stat-val" id="navActive">—</span>
+        <span class="nav-stat-lbl">pågående</span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- App shell -->
+  <div class="app-shell">
+
+    <!-- ── LEFT: Search + Results ── -->
+    <div class="search-col">
+
+      <!-- Sticky search area -->
+      <div class="search-area">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 20 20" fill="none">
+            <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" stroke-width="1.6"/>
+            <path d="M13 13l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          </svg>
+          <input
+            id="searchInput"
+            type="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="Sök plats, projekttyp, handläggare, sökande…"
+          />
+          <button class="clear-btn hidden" id="clearBtn" aria-label="Rensa">
+            <svg viewBox="0 0 16 16" fill="currentColor" width="12" height="12">
+              <path d="M8 8l3.5 3.5-1 1L7 9 3.5 12.5l-1-1L6 8 2.5 4.5l1-1L7 7l3.5-3.5 1 1z"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="chips" id="chips" role="group" aria-label="Filtrera projekt">
+          <button class="chip active" data-filter="alla">Alla</button>
+          <button class="chip" data-filter="offshore">
+            <span class="chip-icon vi"></span>Vind offshore
+          </button>
+          <button class="chip" data-filter="onshore">
+            <span class="chip-icon vi"></span>Vind onshore
+          </button>
+          <button class="chip" data-filter="solkraft">
+            <span class="chip-icon so"></span>Solkraft
+          </button>
+          <button class="chip" data-filter="vattenkraft">
+            <span class="chip-icon va"></span>Vattenkraft
+          </button>
+          <button class="chip" data-filter="bioenergi">
+            <span class="chip-icon bi"></span>Bioenergi
+          </button>
+          <button class="chip" data-filter="batteri">
+            <span class="chip-icon ba"></span>Lagring
+          </button>
+          <button class="chip chip-muted" data-filter="avslagna">
+            Visa avslagna
+          </button>
+        </div>
+      </div>
+
+      <!-- Live data status -->
+      <div class="live-status" id="liveStatus"></div>
+
+      <!-- Results meta row -->
+      <div class="results-meta" id="resultsMeta">
+        <span id="resultsCount">25 projekt</span>
+        <span class="results-sort" id="resultsSort">Sorterat efter datum</span>
+      </div>
+
+      <!-- Results list -->
+      <ul class="results-list" id="resultsList" role="listbox" aria-label="Sökresultat">
+        <!-- rendered by JS -->
+      </ul>
+
+    </div><!-- /search-col -->
+
+    <!-- ── RIGHT: Detail panel ── -->
+    <div class="detail-col" id="detailCol">
+
+      <!-- Empty state -->
+      <div class="detail-empty" id="detailEmpty">
+        <div class="empty-visual">
+          <svg viewBox="0 0 64 64" fill="none" width="64" height="64">
+            <circle cx="32" cy="32" r="30" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+            <path d="M32 12v4M32 48v4M12 32h4M48 32h4" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="32" cy="32" r="10" stroke="rgba(77,124,255,0.4)" stroke-width="1.5"/>
+            <circle cx="32" cy="32" r="3" fill="rgba(77,124,255,0.6)"/>
+            <!-- Turbine blades -->
+            <path d="M32 22 Q35 27 32 29 Q29 27 32 22Z" fill="rgba(77,124,255,0.25)"/>
+            <path d="M40 37 Q35 34 35 31 Q38 29 40 37Z" fill="rgba(77,124,255,0.25)"/>
+            <path d="M24 37 Q29 34 29 31 Q26 29 24 37Z" fill="rgba(77,124,255,0.25)"/>
+          </svg>
+        </div>
+        <h2>Välj ett projekt</h2>
+        <p>Klicka på ett projekt i listan för att se fullständig information, ärendestatus och systemanalys.</p>
+      </div>
+
+      <!-- Project detail (hidden until selected) -->
+      <article class="detail-panel hidden" id="detailPanel">
+        <!-- rendered by JS -->
+      </article>
+
+    </div><!-- /detail-col -->
+
+  </div><!-- /app-shell -->
+
   <script src="script.js"></script>
 </body>
 </html>
