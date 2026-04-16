@@ -179,7 +179,9 @@ function search(query) {
    ANALYSIS GENERATOR
    ============================================================ */
 function daysBetween(d1, d2) {
-  return Math.round((new Date(d2) - new Date(d1)) / 86400000);
+  const a = new Date(d1), b = new Date(d2);
+  if (isNaN(a.getTime()) || isNaN(b.getTime())) return 0;
+  return Math.round((b - a) / 86400000);
 }
 
 function generateSummary(p) {
@@ -409,6 +411,7 @@ function estimateGridConnection(p) {
 function formatDate(iso) {
   if (!iso) return '—';
   const d = new Date(iso);
+  if (isNaN(d.getTime())) return '—';
   return d.toLocaleDateString('sv-SE', { year: 'numeric', month: 'long', day: 'numeric' });
 }
 
