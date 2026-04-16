@@ -1,13 +1,16 @@
 {
-  "name": "energiarenden-lansstyrelsen",
+  "name": "weckmedia-webbprojekt",
   "version": "1.0.0",
   "description": "Sökdatabas för energiärenden – Länsstyrelsen Sverige",
   "engines": {
     "node": ">=18"
   },
   "dependencies": {
+    "@sparticuz/chromium": "^143.0.4",
     "dotenv": "^16.4.5",
-    "pg": "^8.13.3"
+    "pg": "^8.13.3",
+    "puppeteer-core": "^24.39.1",
+    "resend": "^6.9.4"
   },
   "scripts": {
     "dev": "python3 -m http.server 8765",

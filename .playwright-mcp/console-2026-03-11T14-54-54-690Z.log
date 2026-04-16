@@ -1,0 +1,17 @@
+[     470ms] [ERROR] Failed to load resource: the server responded with a status of 401 () @ https://energiarenden.vercel.app/:0
+[    2085ms] TypeError: Cannot set properties of null (setting 'textContent')
+    at renderResultsList (https://energiarenden.vercel.app/script.js:1661:22)
+    at applySearch (https://energiarenden.vercel.app/script.js:1899:3)
+    at HTMLDocument.init (https://energiarenden.vercel.app/script.js:2104:3)
+[    2201ms] [ERROR] Failed to load resource: the server responded with a status of 404 () @ https://energiarenden.vercel.app/favicon.ico:0
+[   39158ms] TypeError: Cannot set properties of null (setting 'textContent')
+    at renderResultsList (https://energiarenden.vercel.app/script.js:1661:22)
+    at applySearch (https://energiarenden.vercel.app/script.js:1899:3)
+    at HTMLSelectElement.<anonymous> (https://energiarenden.vercel.app/script.js:2021:3)
+[   46885ms] TypeError: Cannot set properties of null (setting 'textContent')
+    at renderResultsList (https://energiarenden.vercel.app/script.js:1661:22)
+    at applySearch (https://energiarenden.vercel.app/script.js:1899:3)
+    at HTMLSelectElement.<anonymous> (https://energiarenden.vercel.app/script.js:2027:3)
+[   61643ms] TypeError: Cannot set properties of null (setting 'textContent')
+    at renderResultsList (https://energiarenden.vercel.app/script.js:1661:22)
+    at applySearch (https://energiarenden.vercel.app/script.js:1899:3)

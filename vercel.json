@@ -1,13 +1,10 @@
 {
   "version": 2,
   "functions": {
-    "api/projects.js": { "maxDuration": 30 },
-    "api/crawl.js":    { "maxDuration": 30 }
+    "api/projects.js": { "maxDuration": 10 },
+    "api/webb-leverans.js": { "maxDuration": 120 },
+    "api/seo-analys.js": { "maxDuration": 120 },
+    "api/send-email.js": { "maxDuration": 10 }
   },
-  "crons": [
-    {
-      "path": "/api/crawl",
-      "schedule": "0 4 * * *"
-    }
-  ]
+  "crons": []
 }
