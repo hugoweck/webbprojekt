@@ -222,10 +222,13 @@ function generateAIAnalysis(p) {
 
   // ─── Timeline velocity (anpassad per fas) ───
   let velocity;
+  const hasDays = days > 0 && !isNaN(days);
   if (hasPermit) {
     velocity = `Ärendet har fått tillstånd. Fokus bör ligga på genomförbarheten samt lönsamheten för projektet givet nuvarande marknadsförhållanden och elnätssituation.`;
   } else if (isDevelopment) {
-    if (days < 150) {
+    if (!hasDays) {
+      velocity = `Ärendet är under handläggning. Datumuppgifter saknas för att beräkna handläggningstid.`;
+    } else if (days < 150) {
       velocity = `Handläggningstakten är hög. Med ${days} dagar sedan inlämning befinner sig ärendet klart under genomsnittlig handläggningstid (ca 18–24 månader). Sannolikheten att erhålla tillstånd bedöms utifrån ärendets nuvarande status.`;
     } else if (days < 400) {
       velocity = `Handläggningstiden om ${days} dagar är inom normalt spann för ${p.type}projekt med denna profil. Processen fortskrider enligt gängse ärendegång.`;
@@ -233,23 +236,34 @@ function generateAIAnalysis(p) {
       velocity = `Ärendet har pågått under ${days} dagar, vilket överstiger typisk handläggningstid. Det kan indikera komplexa utredningsbehov, kompletteringsbegäran eller överklagandeprocesser.`;
     }
   } else if (isAppeal) {
-    velocity = `Ärendet är överklagat efter ${days} dagar. Prövning sker i Mark- och miljödomstolen, vilket typiskt förlänger processen med 6–18 månader.`;
+    velocity = hasDays
+      ? `Ärendet är överklagat efter ${days} dagar. Prövning sker i Mark- och miljödomstolen, vilket typiskt förlänger processen med 6–18 månader.`
+      : `Ärendet är överklagat. Prövning sker i Mark- och miljödomstolen, vilket typiskt förlänger processen med 6–18 månader.`;
   } else {
-    velocity = `Ärendet har pågått under ${days} dagar.`;
+    velocity = hasDays ? `Ärendet har pågått under ${days} dagar.` : '';
   }
 
   // ─── Capacity context ───
   let scale;
-  const val = p.capacity ? p.capacity.value : 0;
-  if (p.type === 'vindkraft') {
-    if (val >= 200) scale = `Med ${val} ${p.capacity.unit} installerad effekt klassificeras projektet som storskaligt nationellt intresse. Projektet kan ensamt täcka el-behovet för tiotusentals hushåll och har strategisk betydelse för Sveriges energiomställning.`;
-    else if (val >= 50) scale = `Projektets effekt om ${val} MW är representativt för ett regionalt signifikant vindkraftsprojekt. Det bidrar märkbart till länets förnybara produktionskapacitet.`;
-    else scale = `Med ${val} MW är projektet ett medelstort ${p.type}projekt, vanligt förekommande i prövningsprocessen hos länsstyrelserna.`;
+  const val = estimateCapacityMW(p);
+  const isEstimated = !(p.capacity && p.capacity.value > 0) && val > 0;
+  const valLabel = isEstimated ? `uppskattningsvis ${val}` : `${val}`;
+  const annualProdForScale = parseAnnualProduction(p);
+
+  if (val === 0 && annualProdForScale === 0) {
+    scale = `Kapacitetsdata saknas för detta projekt. En fullständig bedömning kan inte göras utan effektuppgifter.`;
+  } else if (p.type === 'vindkraft') {
+    if (val >= 200) scale = `Med ${valLabel} MW installerad effekt klassificeras projektet som storskaligt nationellt intresse. Projektet kan ensamt täcka el-behovet för tiotusentals hushåll och har strategisk betydelse för Sveriges energiomställning.`;
+    else if (val >= 50) scale = `Projektets effekt om ${valLabel} MW är representativt för ett regionalt signifikant vindkraftsprojekt. Det bidrar märkbart till länets förnybara produktionskapacitet.`;
+    else if (val > 0) scale = `Med ${valLabel} MW är projektet ett medelstort ${p.type}projekt, vanligt förekommande i prövningsprocessen hos länsstyrelserna.`;
+    else scale = `Årsproduktionen beräknas till ${annualProdForScale} GWh. Effektdata saknas men produktionssiffran indikerar ett projekt av betydande storlek.`;
   } else if (p.type === 'solkraft') {
-    if (val >= 50) scale = `En solpark om ${val} MW överstiger klart gränsen för tillståndsplikt och kräver fullständig miljöprövning. Projektet tillhör de mer storskaliga solcellssatsningarna i Sverige.`;
-    else scale = `Solparken om ${val} MW är ett medelstort projekt men kräver ändå fullständig tillståndsprövning.`;
+    if (val >= 50) scale = `En solpark om ${valLabel} MW överstiger klart gränsen för tillståndsplikt och kräver fullständig miljöprövning. Projektet tillhör de mer storskaliga solcellssatsningarna i Sverige.`;
+    else if (val > 0) scale = `Solparken om ${valLabel} MW är ett medelstort projekt men kräver ändå fullständig tillståndsprövning.`;
+    else scale = `Årsproduktionen beräknas till ${annualProdForScale} GWh. Effektdata saknas men produktionssiffran tyder på en betydande anläggning.`;
   } else {
-    scale = `Projektet med en kapacitet om ${val} ${p.capacity ? p.capacity.unit : ''} kräver en heltäckande miljökonsekvensbedömning i enlighet med Miljöbalken.`;
+    if (val > 0) scale = `Projektet med en kapacitet om ${valLabel} ${p.capacity ? p.capacity.unit : 'MW'} kräver en heltäckande miljökonsekvensbedömning i enlighet med Miljöbalken.`;
+    else scale = `Kapacitetsdata saknas. Projektet kräver miljökonsekvensbedömning i enlighet med Miljöbalken.`;
   }
 
   // ─── Outcome prediction ───
@@ -276,7 +290,7 @@ function generateAIAnalysis(p) {
 
   // ─── Investment valuation (baserat på skede) ───
   let valuation = '';
-  const capMW = p.capacity ? p.capacity.value : 0;
+  const capMW = estimateCapacityMW(p);
   if (capMW > 0) {
     let estimatedMSEK = 0;
     let valuationNote = '';
@@ -356,6 +370,38 @@ function generateAIAnalysis(p) {
 }
 
 /* ============================================================
+   CAPACITY ESTIMATION HELPER
+   ============================================================ */
+function estimateCapacityMW(p) {
+  // Return actual capacity if available and > 0
+  if (p.capacity && p.capacity.value > 0) return p.capacity.value;
+
+  // Try to extract from keyFacts "Installerad effekt X MW"
+  for (const f of (p.keyFacts || [])) {
+    const m = f.match(/installerad\s+effekt\s+([\d\s,.]+)\s*MW/i);
+    if (m) {
+      const val = parseFloat(m[1].replace(/\s/g, '').replace(',', '.'));
+      if (val > 0) return val;
+    }
+  }
+
+  // Estimate from annual production: ~3000 full-load hours for wind, ~1000 for solar
+  const annualGWh = parseAnnualProduction(p);
+  if (annualGWh > 0) {
+    const hours = p.type === 'solkraft' ? 1000 : 3000;
+    return Math.round((annualGWh * 1000) / hours);
+  }
+
+  // Estimate from turbine count: typical 4-7 MW per modern turbine
+  for (const f of (p.keyFacts || [])) {
+    const m = f.match(/(\d+)\s*vindkraftverk/i);
+    if (m) return parseInt(m[1]) * 5; // ~5 MW avg per turbine
+  }
+
+  return 0;
+}
+
+/* ============================================================
    PRODUCTION & GRID HELPERS
    ============================================================ */
 function parseAnnualProduction(p) {
@@ -368,6 +414,7 @@ function parseAnnualProduction(p) {
 }
 
 function estimateGridConnection(p) {
+  const capMW = estimateCapacityMW(p);
   // Map counties to typical grid connection points
   const gridStations = {
     'Norrbotten': 'Luleå/Boden (400 kV)',
@@ -396,11 +443,16 @@ function estimateGridConnection(p) {
   const station = gridStations[p.county];
   if (!station) return null;
 
-  const capMW = p.capacity ? p.capacity.value : 0;
   let sizeNote = '';
-  if (capMW >= 100) sizeNote = `Med ${capMW} MW krävs sannolikt anslutning till regionnätet eller stamnätet.`;
-  else if (capMW >= 10) sizeNote = `Med ${capMW} MW ansluts projektet troligen till regionnätet.`;
-  else sizeNote = `Med ${capMW} MW kan projektet anslutas till lokalnätet.`;
+  if (capMW === 0) {
+    sizeNote = 'Kapacitetsdata saknas — nätanslutningsnivå kan inte bedömas.';
+  } else if (capMW >= 100) {
+    sizeNote = `Med ${capMW} MW krävs sannolikt anslutning till regionnätet eller stamnätet.`;
+  } else if (capMW >= 10) {
+    sizeNote = `Med ${capMW} MW ansluts projektet troligen till regionnätet.`;
+  } else {
+    sizeNote = `Med ${capMW} MW kan projektet anslutas till lokalnätet.`;
+  }
 
   return `Närmaste rimliga anslutningspunkt bedöms vara ${station} i ${p.county} län. ${sizeNote}`;
 }
@@ -475,7 +527,6 @@ function renderResultCard(r, isActive) {
       <div class="rel-bar-track">
         <div class="rel-bar-fill" style="width: ${relPct}%"></div>
       </div>
-      <span class="rel-label">${relPct}% träff</span>
     </div>` : ''}
   `;
 
@@ -561,12 +612,37 @@ function renderDetailPanel(id) {
   const tagsHTML = p.tags.map(t => `<span class="tag-pill">${t}</span>`).join('');
 
   // Metrics
-  const cap = p.capacity ? `${p.capacity.value} ${p.capacity.unit}` : '—';
+  const rawCap = p.capacity ? p.capacity.value : 0;
+  const estCap = estimateCapacityMW(p);
   const annualProd = parseAnnualProduction(p);
-  const capProdLabel = annualProd > 0 ? 'Kapacitet / Årlig produktion' : 'Kapacitet';
-  const capProdValue = annualProd > 0 ? `${cap} / ${annualProd} GWh` : cap;
+  let capProdLabel, capProdValue;
+  if (rawCap > 0 && annualProd > 0) {
+    capProdLabel = 'Kapacitet / Årlig produktion';
+    capProdValue = `${rawCap} ${p.capacity.unit} / ${annualProd} GWh`;
+  } else if (rawCap > 0) {
+    capProdLabel = 'Kapacitet';
+    capProdValue = `${rawCap} ${p.capacity.unit}`;
+  } else if (annualProd > 0) {
+    capProdLabel = estCap > 0 ? 'Uppskattad kapacitet / Årlig produktion' : 'Årlig produktion';
+    capProdValue = estCap > 0 ? `~${estCap} MW / ${annualProd} GWh` : `${annualProd} GWh`;
+  } else if (estCap > 0) {
+    capProdLabel = 'Uppskattad kapacitet';
+    capProdValue = `~${estCap} MW`;
+  } else {
+    capProdLabel = 'Kapacitet';
+    capProdValue = '—';
+  }
   const area = p.area != null ? `${p.area.toLocaleString('sv-SE')} ha` : '—';
-  const inv  = p.investmentMSEK != null ? `${p.investmentMSEK.toLocaleString('sv-SE')} MSEK` : 'Ej angiven';
+  // Estimate investment if not available
+  let inv;
+  if (p.investmentMSEK != null) {
+    inv = `${p.investmentMSEK.toLocaleString('sv-SE')} MSEK`;
+  } else if (estCap > 0) {
+    const estInv = p.type === 'solkraft' ? Math.round(estCap * 7) : Math.round(estCap * 12);
+    inv = `~${estInv.toLocaleString('sv-SE')} MSEK`;
+  } else {
+    inv = '—';
+  }
   const dur  = p.duration || '—';
 
   // Fas-taggar
@@ -600,7 +676,7 @@ function renderDetailPanel(id) {
       <div class="metric-card">
         <div class="metric-label">Investering</div>
         <div class="metric-value">${inv}</div>
-        <div class="metric-unit">uppskattad</div>
+        <div class="metric-unit">${inv.startsWith('~') ? 'AI-uppskattad' : inv === '—' ? '' : 'uppskattad'}</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Driftstid</div>
