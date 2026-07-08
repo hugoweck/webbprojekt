@@ -1,0 +1,30 @@
+name: Crawl Vindbrukskollen
+
+on:
+  schedule:
+    - cron: '0 3 * * *'   # Kl 03:00 UTC varje dag (05:00 svensk tid)
+  workflow_dispatch:        # Kan köras manuellt från GitHub UI
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Installera dependencies
+        run: npm ci --omit=dev
+
+      - name: Kör crawl
+        run: node scripts/crawl-to-json.js
+
+      - name: Committa uppdaterad data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/projects.json
+          git diff --staged --quiet || git commit -m "chore: uppdatera projects.json $(date -u +%Y-%m-%d)"
+          git push
